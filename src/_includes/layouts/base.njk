@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ description or 'Infinity Circuit — Marvel: Crisis Protocol Regional Competitive Circuit' }}">
+  <title>{{ title + ' — Infinity Circuit' if title else 'Infinity Circuit' }}</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/mark.svg">
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="site-nav">
+    <div class="container">
+      <a href="/" class="nav-brand">
+        <!-- Inline mark SVG — light version for dark nav background -->
+        <svg width="36" height="36" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Outer hexagon -->
+          <polygon points="28,3 51,15.5 51,40.5 28,53 5,40.5 5,15.5"
+            fill="none" stroke="#9370c8" stroke-width="2"/>
+          <!-- Inner hexagon ring -->
+          <polygon points="28,11 44,20.5 44,35.5 28,45 12,35.5 12,20.5"
+            fill="none" stroke="#9370c8" stroke-width="1.5" opacity="0.45"/>
+          <!-- Center gem -->
+          <polygon points="28,19 36,24 36,32 28,37 20,32 20,24"
+            fill="#9370c8"/>
+          <!-- Stone dots — clockwise from top -->
+          <circle cx="28" cy="3"    r="3" fill="#c41e3a"/> <!-- Reality -->
+          <circle cx="51" cy="15.5" r="3" fill="#e8b800"/> <!-- Mind -->
+          <circle cx="51" cy="40.5" r="3" fill="#e87200"/> <!-- Soul -->
+          <circle cx="28" cy="53"   r="3" fill="#1a5fe0"/> <!-- Space -->
+          <circle cx="5"  cy="40.5" r="3" fill="#0da85e"/> <!-- Time -->
+          <circle cx="5"  cy="15.5" r="3" fill="#c0357a"/> <!-- Power -->
+        </svg>
+        <span class="nav-brand-text">
+          <span class="nav-brand-name">Infinity Circuit</span>
+          <span class="nav-brand-sub">Marvel: Crisis Protocol</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" onclick="this.closest('nav').querySelector('.nav-links').classList.toggle('open')">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links">
+        <li><a href="/standings/" {% if page.url == '/standings/' %}class="active"{% endif %}>Standings</a></li>
+        <li><a href="/events/" {% if page.url == '/events/' %}class="active"{% endif %}>Events</a></li>
+        <li><a href="/news/" {% if '/news' in page.url %}class="active"{% endif %}>News</a></li>
+        <li><a href="/rules/" {% if page.url == '/rules/' %}class="active"{% endif %}>Rules</a></li>
+        <li><a href="/about/" {% if page.url == '/about/' %}class="active"{% endif %}>About</a></li>
+        <li><a href="/submit/" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.8rem;">Submit Results</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Page Content ── -->
+  <main>
+    {{ content | safe }}
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="container">
+      <span>© {{ build.env.npm_package_version or '' }} Infinity Circuit. Not affiliated with Atomic Mass Games or Marvel.</span>
+      <ul class="footer-links">
+        <li><a href="/rules/">Rules</a></li>
+        <li><a href="/submit/">Submit Results</a></li>
+        <li><a href="/apply/">Host an Event</a></li>
+        <li><a href="https://longshanks.org" target="_blank" rel="noopener">Longshanks</a></li>
+        <li><a href="https://atomicmassgames.com/rules" target="_blank" rel="noopener">AMG Rules</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</body>
+</html>

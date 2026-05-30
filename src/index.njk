@@ -1,0 +1,176 @@
+---
+layout: layouts/base.njk
+title: Home
+description: Infinity Circuit — Marvel Crisis Protocol Regional Competitive Circuit
+---
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="container">
+
+    <div class="hero-mark">
+      <svg viewBox="-4 -4 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Infinity Circuit mark">
+        <polygon points="28,3 51,15.5 51,40.5 28,53 5,40.5 5,15.5"
+          fill="none" stroke="#9370c8" stroke-width="2"/>
+        <polygon points="28,11 44,20.5 44,35.5 28,45 12,35.5 12,20.5"
+          fill="none" stroke="#9370c8" stroke-width="1.5" opacity="0.45"/>
+        <polygon points="28,19 36,24 36,32 28,37 20,32 20,24"
+          fill="#9370c8"/>
+        <circle id="sd0" cx="28" cy="3"    r="3" fill="#c41e3a"/>
+        <circle id="sd1" cx="51" cy="15.5" r="3" fill="#e8b800"/>
+        <circle id="sd2" cx="51" cy="40.5" r="3" fill="#e87200"/>
+        <circle id="sd3" cx="28" cy="53"   r="3" fill="#1a5fe0"/>
+        <circle id="sd4" cx="5"  cy="40.5" r="3" fill="#0da85e"/>
+        <circle id="sd5" cx="5"  cy="15.5" r="3" fill="#c0357a"/>
+      </svg>
+    </div>
+
+    <h1 class="hero-title">Infinity Circuit</h1>
+    <p class="hero-subtitle">Marvel: Crisis Protocol Competitive Circuit</p>
+    <p class="hero-description">
+      A regional competitive circuit built around the Marvel: Crisis Protocol community.
+      Earn Shard Points across sanctioned events, claim an Infinity Stone, and qualify
+      for the Infinity Gauntlet Championship.
+    </p>
+    <div class="hero-actions">
+      <a href="/standings/" class="btn btn-primary">View Standings</a>
+      <a href="/events/" class="btn btn-outline">Upcoming Events</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── How It Works ── -->
+<section class="section section-light">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">The Circuit</span>
+      <h2 class="section-title">How the Season Works</h2>
+    </div>
+    <div class="how-grid">
+
+      <div class="how-card">
+        <div class="how-number">01</div>
+        <h3 class="how-title">Compete at Shards Events</h3>
+        <p class="how-body">Any sanctioned store can host a Shards Event. Play Swiss rounds, earn Shard Points based on your placement and the event's attendance. Your best four results count toward your season total.</p>
+        <span class="pill pill-shards">Shards Event</span>
+      </div>
+
+      <div class="how-card">
+        <div class="how-number">02</div>
+        <h3 class="how-title">Win an Infinity Qualifier</h3>
+        <p class="how-body">Six Infinity Qualifiers are held each season at designated partner stores. Win one and you claim that event's Infinity Stone — a guaranteed seat at the Championship, no standings required.</p>
+        <span class="pill pill-qualifier" style="border-color: var(--reality);">Infinity Qualifier</span>
+      </div>
+
+      <div class="how-card">
+        <div class="how-number">03</div>
+        <h3 class="how-title">Qualify via Shard Standings</h3>
+        <p class="how-body">Can't make it to a Qualifier? The top Shard Point holders who don't already hold a Stone earn at-large invitations to the Championship. Up to ten at-large spots are available.</p>
+        <span class="pill pill-shards">At-Large</span>
+      </div>
+
+      <div class="how-card">
+        <div class="how-number">04</div>
+        <h3 class="how-title">The Infinity Gauntlet Championship</h3>
+        <p class="how-body">The season culminates in an invitational Championship — six Stone holders seeded in, up to ten at-large qualifiers rounding out the field. The winner claims the Infinity Gauntlet trophy.</p>
+        <span class="pill pill-championship">Championship</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Upcoming Events placeholder ── -->
+<section class="section section-tint">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Season Calendar</span>
+      <h2 class="section-title">Upcoming Events</h2>
+    </div>
+    <p style="color: #666; margin-bottom: 1.5rem;">Events will appear here once the season calendar is published.</p>
+    <a href="/events/" class="btn btn-primary">View Full Calendar</a>
+  </div>
+</section>
+
+<!-- ── Standings preview placeholder ── -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Season Standings</span>
+      <h2 class="section-title">Current Leaderboard</h2>
+    </div>
+    <p style="color: rgba(255,255,255,0.5); margin-bottom: 1.5rem;">Standings will update automatically as events are approved.</p>
+    <a href="/standings/" class="btn btn-outline">Full Standings</a>
+  </div>
+</section>
+
+<style>
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+.how-card {
+  padding: 1.5rem;
+  border: 1px solid rgba(96,64,160,0.15);
+  border-radius: 6px;
+  background: #fff;
+}
+.how-number {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--circuit-tint);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  -webkit-text-stroke: 1.5px var(--void-violet);
+}
+.how-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--deep-violet);
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+.how-body {
+  font-size: 0.875rem;
+  color: #555;
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+</style>
+
+<script>
+(function () {
+  var BASE = 3, PEAK = 4.8, CYCLE = 8000, HALF = 250;
+  var dots = [0,1,2,3,4,5].map(function(i){ return document.getElementById('sd' + i); });
+
+  function pulse(dot) {
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var e = ts - start;
+      var r;
+      if (e < HALF) {
+        r = BASE + (PEAK - BASE) * (0.5 - 0.5 * Math.cos(Math.PI * e / HALF));
+      } else if (e < HALF * 2) {
+        r = PEAK - (PEAK - BASE) * (0.5 - 0.5 * Math.cos(Math.PI * (e - HALF) / HALF));
+      } else {
+        dot.setAttribute('r', BASE);
+        return;
+      }
+      dot.setAttribute('r', r);
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  dots.forEach(function (dot, i) {
+    if (!dot) return;
+    setTimeout(function () {
+      pulse(dot);
+      setInterval(function () { pulse(dot); }, CYCLE);
+    }, i * (CYCLE / dots.length));
+  });
+})();
+</script>
