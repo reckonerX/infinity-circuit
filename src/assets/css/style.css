@@ -332,25 +332,17 @@ a:hover {
 .event-card {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(147,112,200,0.2);
+  border-left: 4px solid var(--void-violet);
   border-radius: 6px;
-  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+  padding: 1.25rem;
   position: relative;
   overflow: hidden;
   transition: box-shadow 0.15s, border-color 0.15s;
 }
 
-.event-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: var(--void-violet);
-}
-
 .event-card:hover {
   border-color: rgba(147,112,200,0.4);
+  border-left-color: var(--void-violet);
   box-shadow: 0 4px 24px rgba(0,0,0,0.3);
 }
 
