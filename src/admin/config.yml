@@ -2,6 +2,8 @@ backend:
   name: github
   repo: reckonerX/infinity-circuit
   branch: main
+  base_url: https://infinity-circuit.pages.dev
+  auth_endpoint: /api/auth
 
 media_folder: "src/assets/images/posts"
 public_folder: "/assets/images/posts"
