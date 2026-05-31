@@ -11,4 +11,4 @@ The circuit runs across a full season of sanctioned events in three tiers: Shard
 
 Players accumulate Shard Points throughout the season. Qualifier winners earn an automatic Championship invitation. The best Shard Point totals fill the remaining spots.
 
-Details on our partner stores, season calendar, and how to participate are coming soon. Stay tuned — the season launch announcement will have everything you need.
+Details on our partner stores, season calendar, and how to participate are coming soon. Stay tuned! The season launch announcement will have everything you need.
