@@ -1,0 +1,62 @@
+<svg width="100%" viewBox="0 0 690 350" role="img" style="" xmlns="http://www.w3.org/2000/svg">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Infinity Circuit announcement graphic</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Infinity Circuit logo mark and wordmark centered on a deep cosmic dark background with subtle hex grid texture</desc>
+
+  <rect width="680" height="340" fill="#12101e" rx="12" style="fill:rgb(18, 16, 30);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Subtle hex grid background pattern -->
+  <defs>
+    <pattern id="hexgrid" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
+      <path d="M30 2 L52 14 L52 38 L30 50 L8 38 L8 14 Z" fill="none" stroke="#9370c8" stroke-width="0.3" opacity="0.18"/>
+    </pattern>
+  </defs>
+  <rect width="680" height="340" fill="url(#hexgrid)" rx="12" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Center group: mark + wordmark -->
+  <!-- Mark centered at x=280, wordmark to the right -->
+
+  <!-- Mark group, centered around (200, 170), scaled up ~3.5x from 56px viewBox -->
+  <!-- Original viewBox 0 0 56 56, scale factor ~3.2 = 179px -->
+  <!-- Outer hex vertices (clockwise from top): (28,3)(51,15.5)(51,40.5)(28,53)(5,40.5)(5,15.5) -->
+  <!-- Scaled 3.2x, translated to center at (200, 170) -->
+  <!-- cx_offset = 200 - 28*3.2 = 200 - 89.6 = 110.4 -->
+  <!-- cy_offset = 170 - 28*3.2 = 170 - 89.6 = 80.4 -->
+
+  <g transform="translate(110.4, 80.4) scale(3.2)" style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">
+    <!-- Outer hexagon -->
+    <polygon points="28,3 51,15.5 51,40.5 28,53 5,40.5 5,15.5" fill="none" stroke="#9370c8" stroke-width="1.5" style="fill:none;stroke:rgb(147, 112, 200);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <!-- Inner hexagon ring at ~45% opacity -->
+    <polygon points="28,11 44,20.5 44,35.5 28,45 12,35.5 12,20.5" fill="none" stroke="#9370c8" stroke-width="1" opacity="0.45" style="fill:none;stroke:rgb(147, 112, 200);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.45;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <!-- Center gem -->
+    <polygon points="28,19 36,24 36,32 28,37 20,32 20,24" fill="#9370c8" style="fill:rgb(147, 112, 200);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+    <!-- Stone dots clockwise from top -->
+    <!-- Top: Reality Stone #c41e3a at (28,3) -->
+    <circle cx="28" cy="3" r="2.8" fill="#c41e3a" style="fill:rgb(196, 30, 58);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <!-- Top-right: Mind Stone #e8b800 at (51,15.5) -->
+    <circle cx="51" cy="15.5" r="2.8" fill="#e8b800" style="fill:rgb(232, 184, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <!-- Bottom-right: Soul Stone #e87200 at (51,40.5) -->
+    <circle cx="51" cy="40.5" r="2.8" fill="#e87200" style="fill:rgb(232, 114, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <!-- Bottom: Space Stone #1a5fe0 at (28,53) -->
+    <circle cx="28" cy="53" r="2.8" fill="#1a5fe0" style="fill:rgb(26, 95, 224);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <!-- Bottom-left: Time Stone #0da85e at (5,40.5) -->
+    <circle cx="5" cy="40.5" r="2.8" fill="#0da85e" style="fill:rgb(13, 168, 94);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+    <!-- Top-left: Power Stone #c0357a at (5,15.5) -->
+    <circle cx="5" cy="15.5" r="2.8" fill="#c0357a" style="fill:rgb(192, 53, 122);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  </g>
+
+  <!-- Wordmark: INFINITY CIRCUIT -->
+  <text x="342" y="156" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="46" font-weight="600" letter-spacing="0.06em" fill="#ffffff" text-anchor="start" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Space Grotesk&quot;, Inter, sans-serif;font-size:46px;font-weight:600;text-anchor:start;dominant-baseline:auto">INFINITY</text>
+  <text x="342" y="204" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="46" font-weight="600" letter-spacing="0.06em" fill="#ffffff" text-anchor="start" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Space Grotesk&quot;, Inter, sans-serif;font-size:46px;font-weight:600;text-anchor:start;dominant-baseline:auto">CIRCUIT</text>
+
+  <!-- Subline -->
+  <text x="344" y="228" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="500" letter-spacing="0.14em" fill="#9370c8" text-anchor="start" style="fill:rgb(147, 112, 200);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Space Grotesk&quot;, Inter, sans-serif;font-size:13px;font-weight:500;text-anchor:start;dominant-baseline:auto">MARVEL: CRISIS PROTOCOL</text>
+
+  <!-- Six stone color bar at bottom -->
+  <rect x="110" y="292" width="80" height="3" rx="1.5" fill="#c41e3a" style="fill:rgb(196, 30, 58);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="198" y="292" width="80" height="3" rx="1.5" fill="#e8b800" style="fill:rgb(232, 184, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="286" y="292" width="80" height="3" rx="1.5" fill="#e87200" style="fill:rgb(232, 114, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="374" y="292" width="80" height="3" rx="1.5" fill="#1a5fe0" style="fill:rgb(26, 95, 224);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="462" y="292" width="80" height="3" rx="1.5" fill="#0da85e" style="fill:rgb(13, 168, 94);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="550" y="292" width="80" height="3" rx="1.5" fill="#c0357a" style="fill:rgb(192, 53, 122);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+</svg>
