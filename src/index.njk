@@ -373,7 +373,11 @@ window.submitHomeNewsletter = function(e) {
             + (ev.date ? '<div>' + formatDate(ev.date) + (ev.time ? ' · ' + formatTime(ev.time) : '') + '</div>' : '')
             + (ev.store ? '<div>' + esc(ev.store) + (ev.city ? ', ' + esc(ev.city) : '') + '</div>' : '')
           + '</div>'
-          + (ev.longshanks ? '<div style="margin-top:0.75rem;"><a href="' + esc(ev.longshanks) + '" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.75rem;padding:0.3rem 0.8rem;' + (stone ? 'background:' + stone.hex + ';' : '') + '">View on Longshanks</a></div>' : '')
+          + (ev.longshanks ? (function() {
+              var lsUrl = ev.longshanks;
+              if (!lsUrl.match(/^https?:\/\//)) lsUrl = 'https://' + lsUrl;
+              return '<div style="margin-top:0.75rem;"><a href="' + esc(lsUrl) + '" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.75rem;padding:0.3rem 0.8rem;' + (stone ? 'background:' + stone.hex + ';' : '') + '">View on Longshanks</a></div>';
+            })() : '')
           + '</div>';
       }).join('');
     })

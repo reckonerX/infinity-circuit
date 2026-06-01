@@ -245,12 +245,16 @@ description: Infinity Circuit — Upcoming sanctioned events calendar
     }
 
     // Button
+    var lsUrl = ev.longshanks;
+      if (lsUrl && !lsUrl.match(/^https?:\/\//)) {
+        lsUrl = 'https://' + lsUrl;
+      }
     var btn = '';
     if (ev.longshanks && !cancelled) {
       if (isQualifier) {
-        btn = '<a href="' + esc(ev.longshanks) + '" target="_blank" rel="noopener" class="btn btn-stone btn-sm" style="background:' + stone.hex + ';">View on Longshanks</a>';
+        btn = '<a href="' + esc(lsUrl) + '" target="_blank" rel="noopener" class="btn btn-stone btn-sm" style="background:' + stone.hex + ';">View on Longshanks</a>';
       } else {
-        btn = '<a href="' + esc(ev.longshanks) + '" target="_blank" rel="noopener" class="btn btn-primary btn-sm">View on Longshanks</a>';
+        btn = '<a href="' + esc(lsUrl) + '" target="_blank" rel="noopener" class="btn btn-primary btn-sm">View on Longshanks</a>';
       }
     }
 
