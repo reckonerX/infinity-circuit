@@ -1,0 +1,485 @@
+---
+layout: layouts/base.njk
+title: Submit Results
+description: Submit event results to the Infinity Circuit
+---
+
+<section class="hero" style="padding: 3rem 0 2.5rem;">
+  <div class="container">
+    <h1 class="hero-title" style="font-size: 2rem;">Submit Event Results</h1>
+    <p class="hero-subtitle">Tournament Organizers</p>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container" style="max-width: 720px;">
+
+    <!-- ── Step 1: Access Code ── -->
+    <div id="step-access">
+      <div class="section-header">
+        <span class="section-eyebrow">Step 1 of 3</span>
+        <h2 class="section-title">Enter your access code</h2>
+      </div>
+      <p style="color:rgba(255,255,255,0.6); margin-bottom:1.5rem; font-size:0.9375rem;">Your access code was provided by the circuit organizers. If you don't have one, contact us on Discord.</p>
+      <div class="form-row">
+        <input type="password" id="access-code-input" class="form-input" placeholder="Access code" autocomplete="off">
+        <button class="btn btn-primary" onclick="unlockForm()">Continue</button>
+      </div>
+      <div id="access-error" class="form-error" style="display:none;">Incorrect access code. Contact the circuit organizers if you need help.</div>
+    </div>
+
+    <!-- ── Step 2: Event Details ── -->
+    <div id="step-event" style="display:none;">
+      <div class="section-header">
+        <span class="section-eyebrow">Step 2 of 3</span>
+        <h2 class="section-title">Event details</h2>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Event Name <span class="form-required">*</span></label>
+        <input type="text" id="event-name" class="form-input" placeholder="e.g. Infinity Circuit Shards Event — Atomic Empire">
+        <div class="form-hint">Use the format from the rules doc: "Infinity Circuit Shards Event — [Store Name]" or "Infinity Qualifier — [Store Name]"</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">Event Date <span class="form-required">*</span></label>
+          <input type="date" id="event-date" class="form-input">
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">Event Tier <span class="form-required">*</span></label>
+          <select id="event-tier" class="form-input" onchange="handleTierChange()">
+            <option value="">Select tier...</option>
+            <option value="Shards Event">Shards Event</option>
+            <option value="Infinity Qualifier">Infinity Qualifier</option>
+          </select>
+        </div>
+        <div class="form-group" id="stone-group" style="display:none;">
+          <label class="form-label">Infinity Stone <span class="form-required">*</span></label>
+          <select id="event-stone" class="form-input">
+            <option value="">Select stone...</option>
+            <option value="Reality" style="color:#c41e3a;">Reality Stone</option>
+            <option value="Mind" style="color:#e8b800;">Mind Stone</option>
+            <option value="Soul" style="color:#e87200;">Soul Stone</option>
+            <option value="Space" style="color:#1a5fe0;">Space Stone</option>
+            <option value="Time" style="color:#0da85e;">Time Stone</option>
+            <option value="Power" style="color:#c0357a;">Power Stone</option>
+          </select>
+          <div class="form-hint">Select the Infinity Stone assigned to your Qualifier. The Stone is awarded to the 1st place finisher, with cascade rules applied by the circuit organizers if needed.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Attendance <span class="form-required">*</span></label>
+        <input type="number" id="event-attendance" class="form-input" placeholder="Total number of players" min="1" max="999" style="max-width:220px;">
+        <div class="form-hint">Must be at least 5 for Shards Events, 8 for Infinity Qualifiers.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Notes <span class="form-optional">(optional)</span></label>
+        <textarea id="event-notes" class="form-input" rows="3" placeholder="Anything the circuit organizers should know about this event..."></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="goToStep('step-access')">Back</button>
+        <button class="btn btn-primary" onclick="goToPlayers()">Continue to Player Results</button>
+      </div>
+      <div id="event-error" class="form-error" style="display:none;"></div>
+    </div>
+
+    <!-- ── Step 3: Player Results ── -->
+    <div id="step-players" style="display:none;">
+      <div class="section-header">
+        <span class="section-eyebrow">Step 3 of 3</span>
+        <h2 class="section-title">Player results</h2>
+      </div>
+      <p style="color:rgba(255,255,255,0.6); margin-bottom:0.5rem; font-size:0.9375rem;">Add players in finishing order — 1st place first. Drag rows to reorder. Placement is assigned automatically.</p>
+      <p style="color:rgba(255,255,255,0.4); margin-bottom:1rem; font-size:0.8125rem;">LSID is the numerical Longshanks ID found on a player's Longshanks profile page — not their username, which can change. Example: 17481.</p>
+
+      <div id="player-list" class="player-list"></div>
+
+      <button class="btn btn-outline" onclick="addPlayer()" style="margin-top:1rem; width:100%;">+ Add Player</button>
+
+      <div id="players-error" class="form-error" style="display:none;"></div>
+
+      <div class="form-actions" style="margin-top:2rem;">
+        <button class="btn btn-outline" onclick="goToStep('step-event')">Back</button>
+        <button class="btn btn-primary" id="submit-btn" onclick="submitResults()">Submit Results</button>
+      </div>
+    </div>
+
+    <!-- ── Confirmation ── -->
+    <div id="step-confirm" style="display:none; text-align:center; padding: 3rem 0;">
+      <div style="margin-bottom:1.5rem;">
+        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="28,3 51,15.5 51,40.5 28,53 5,40.5 5,15.5" fill="none" stroke="#9370c8" stroke-width="2"/>
+          <polygon points="28,11 44,20.5 44,35.5 28,45 12,35.5 12,20.5" fill="none" stroke="#9370c8" stroke-width="1.5" opacity="0.45"/>
+          <polygon points="28,19 36,24 36,32 28,37 20,32 20,24" fill="#9370c8"/>
+          <circle cx="28" cy="3" r="3" fill="#c41e3a"/>
+          <circle cx="51" cy="15.5" r="3" fill="#e8b800"/>
+          <circle cx="51" cy="40.5" r="3" fill="#e87200"/>
+          <circle cx="28" cy="53" r="3" fill="#1a5fe0"/>
+          <circle cx="5" cy="40.5" r="3" fill="#0da85e"/>
+          <circle cx="5" cy="15.5" r="3" fill="#c0357a"/>
+        </svg>
+      </div>
+      <h2 style="font-size:1.5rem; font-weight:600; color:#fff; margin-bottom:0.75rem;">Results Submitted</h2>
+      <p style="color:rgba(255,255,255,0.6); margin-bottom:0.5rem;">Your submission has been received and is pending review.</p>
+      <p id="confirm-id" style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-bottom:2rem;"></p>
+      <a href="/" class="btn btn-primary">Back to Home</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.form-group {
+  margin-bottom: 1.25rem;
+}
+.form-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.form-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.02em;
+}
+.form-required { color: var(--reality); }
+.form-optional { color: rgba(255,255,255,0.35); font-weight: 400; }
+.form-input {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(147,112,200,0.3);
+  border-radius: 4px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.85rem;
+  transition: border-color 0.15s;
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--void-violet);
+}
+.form-input::placeholder { color: rgba(255,255,255,0.25); }
+select.form-input option { background: #1c1830; color: #fff; }
+textarea.form-input { resize: vertical; }
+.form-hint {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+  margin-top: 0.35rem;
+  line-height: 1.5;
+}
+.form-error {
+  background: rgba(196,30,58,0.1);
+  border: 1px solid rgba(196,30,58,0.3);
+  border-radius: 4px;
+  color: #f08090;
+  font-size: 0.875rem;
+  padding: 0.65rem 1rem;
+  margin-top: 1rem;
+}
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Player list */
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.player-row {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(147,112,200,0.2);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  display: grid;
+  grid-template-columns: 32px 24px 1fr 1fr 1fr 1fr 32px;
+  gap: 0.5rem;
+  align-items: center;
+  cursor: grab;
+  transition: border-color 0.15s, background 0.15s;
+}
+.player-row:active { cursor: grabbing; }
+.player-row.dragging {
+  border-color: var(--void-violet);
+  background: rgba(147,112,200,0.1);
+  opacity: 0.8;
+}
+.player-row.drag-over {
+  border-color: var(--void-violet);
+  border-style: dashed;
+}
+.player-rank {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--void-violet);
+  text-align: center;
+}
+.drag-handle {
+  color: rgba(255,255,255,0.2);
+  font-size: 1rem;
+  text-align: center;
+  cursor: grab;
+  user-select: none;
+}
+.player-input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(147,112,200,0.2);
+  border-radius: 3px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 0.8rem;
+  padding: 0.4rem 0.6rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.player-input:focus { border-color: var(--void-violet); }
+.player-input::placeholder { color: rgba(255,255,255,0.2); font-size: 0.75rem; }
+.player-remove {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.2);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0;
+  transition: color 0.15s;
+  text-align: center;
+}
+.player-remove:hover { color: var(--reality); }
+
+/* Column headers */
+.player-list-header {
+  display: grid;
+  grid-template-columns: 32px 24px 1fr 1fr 1fr 1fr 32px;
+  gap: 0.5rem;
+  padding: 0 1rem 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+</style>
+
+<script>
+var ACCESS_CODE = '';
+var ENDPOINT = 'https://script.google.com/macros/s/AKfycby5wQ2PIHH9IeKp5mgiPpcH8TO9JyhXXeaABTUDZOov4zxZ_r3tdeIgVLbZn40rBAznNg/exec';
+var VALID_CODE = 'TH@NOSSN@P'; // matches your Config tab
+
+var dragSrc = null;
+
+function goToStep(id) {
+  ['step-access','step-event','step-players','step-confirm'].forEach(function(s) {
+    document.getElementById(s).style.display = 'none';
+  });
+  document.getElementById(id).style.display = 'block';
+}
+
+function unlockForm() {
+  var code = document.getElementById('access-code-input').value.trim();
+  var err = document.getElementById('access-error');
+  if (code === VALID_CODE) {
+    ACCESS_CODE = code;
+    err.style.display = 'none';
+    goToStep('step-event');
+  } else {
+    err.style.display = 'block';
+  }
+}
+
+function handleTierChange() {
+  var tier = document.getElementById('event-tier').value;
+  var stoneGroup = document.getElementById('stone-group');
+  stoneGroup.style.display = tier === 'Infinity Qualifier' ? 'block' : 'none';
+  if (tier !== 'Infinity Qualifier') {
+    document.getElementById('event-stone').value = '';
+  }
+}
+
+document.getElementById('access-code-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') unlockForm();
+});
+
+function goToPlayers() {
+  var err = document.getElementById('event-error');
+  err.style.display = 'none';
+
+  var name = document.getElementById('event-name').value.trim();
+  var date = document.getElementById('event-date').value;
+  var tier = document.getElementById('event-tier').value;
+  var attendance = document.getElementById('event-attendance').value;
+
+  if (!name || !date || !tier || !attendance) {
+    err.textContent = 'Please fill in all required fields.';
+    err.style.display = 'block';
+    return;
+  }
+
+  if (tier === 'Infinity Qualifier' && !document.getElementById('event-stone').value) {
+  err.textContent = 'Please select the Infinity Stone assigned to this Qualifier.';
+  err.style.display = 'block';
+  return;
+}
+
+  var minPlayers = tier === 'Infinity Qualifier' ? 8 : 5;
+  if (parseInt(attendance) < minPlayers) {
+    err.textContent = tier + ' requires a minimum of ' + minPlayers + ' players to award Shard Points.';
+    err.style.display = 'block';
+    return;
+  }
+
+  goToStep('step-players');
+
+  var list = document.getElementById('player-list');
+  if (!list.children.length || list.children.length === 1 && list.children[0].classList.contains('player-list-header')) {
+    var attendance = parseInt(document.getElementById('event-attendance').value) || 3;
+    list.innerHTML = '<div class="player-list-header"><span></span><span></span><span>Name *</span><span>LSID *</span><span>Discord</span><span>Email</span><span></span></div>';
+    for (var i = 0; i < attendance; i++) { addPlayer(); }
+  }
+}
+
+function addPlayer() {
+  var list = document.getElementById('player-list');
+  var rows = list.querySelectorAll('.player-row');
+  var placement = rows.length + 1;
+
+  var row = document.createElement('div');
+  row.className = 'player-row';
+  row.draggable = true;
+  row.innerHTML =
+    '<div class="player-rank">' + placement + '</div>'
+    + '<div class="drag-handle" title="Drag to reorder">⠿</div>'
+    + '<input class="player-input" type="text" placeholder="Full name" data-field="name">'
+    + '<input class="player-input" type="number" placeholder="e.g. 17481" data-field="longshanks" title="Numerical Longshanks ID">'
+    + '<input class="player-input" type="text" placeholder="Discord" data-field="discord">'
+    + '<input class="player-input" type="email" placeholder="Email" data-field="email">'
+    + '<button class="player-remove" onclick="removePlayer(this)" title="Remove">×</button>';
+
+  row.addEventListener('dragstart', function(e) {
+    dragSrc = row;
+    setTimeout(function() { row.classList.add('dragging'); }, 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  row.addEventListener('dragend', function() {
+    row.classList.remove('dragging');
+    list.querySelectorAll('.player-row').forEach(function(r) { r.classList.remove('drag-over'); });
+    updateRanks();
+  });
+  row.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (dragSrc !== row) row.classList.add('drag-over');
+  });
+  row.addEventListener('dragleave', function() { row.classList.remove('drag-over'); });
+  row.addEventListener('drop', function(e) {
+    e.preventDefault();
+    row.classList.remove('drag-over');
+    if (dragSrc && dragSrc !== row) {
+      var allRows = Array.from(list.querySelectorAll('.player-row'));
+      var srcIdx = allRows.indexOf(dragSrc);
+      var tgtIdx = allRows.indexOf(row);
+      if (srcIdx < tgtIdx) {
+        row.parentNode.insertBefore(dragSrc, row.nextSibling);
+      } else {
+        row.parentNode.insertBefore(dragSrc, row);
+      }
+      updateRanks();
+    }
+  });
+
+  list.appendChild(row);
+}
+
+function removePlayer(btn) {
+  var row = btn.closest('.player-row');
+  row.parentNode.removeChild(row);
+  updateRanks();
+}
+
+function updateRanks() {
+  var rows = document.querySelectorAll('.player-row');
+  rows.forEach(function(row, i) {
+    row.querySelector('.player-rank').textContent = i + 1;
+  });
+}
+
+function submitResults() {
+  var err = document.getElementById('players-error');
+  err.style.display = 'none';
+
+  var rows = document.querySelectorAll('.player-row');
+  if (rows.length < 1) {
+    err.textContent = 'Add at least one player before submitting.';
+    err.style.display = 'block';
+    return;
+  }
+
+  var players = [];
+  var valid = true;
+  rows.forEach(function(row, i) {
+    var name = row.querySelector('[data-field="name"]').value.trim();
+    var longshanks = row.querySelector('[data-field="longshanks"]').value.trim();
+    if (!name || !longshanks) { valid = false; return; }
+    players.push({
+      playerName: name,
+      longshanksUsername: longshanks,
+      discordHandle: row.querySelector('[data-field="discord"]').value.trim(),
+      email: row.querySelector('[data-field="email"]').value.trim(),
+      placement: i + 1
+    });
+  });
+
+  if (!valid) {
+    err.textContent = 'Every player must have a name and numerical Longshanks ID.';
+    err.style.display = 'block';
+    return;
+  }
+
+  var btn = document.getElementById('submit-btn');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  var payload = {
+    accessCode: ACCESS_CODE,
+    submittedBy: 'TO',
+    eventName: document.getElementById('event-name').value.trim(),
+    eventDate: document.getElementById('event-date').value,
+    eventTier: document.getElementById('event-tier').value,
+    stoneAwarded: document.getElementById('event-stone').value || '',
+    attendance: parseInt(document.getElementById('event-attendance').value),
+    notes: document.getElementById('event-notes').value.trim(),
+    players: players
+  };
+
+  fetch(ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    mode: 'no-cors'
+  })
+  .then(function() {
+    var id = 'SUB-' + Date.now();
+    document.getElementById('confirm-id').textContent = 'Submission ID: ' + id;
+    goToStep('step-confirm');
+  })
+  .catch(function(e) {
+    err.textContent = 'Submission failed. Please try again or contact the circuit organizers.';
+    err.style.display = 'block';
+    btn.textContent = 'Submit Results';
+    btn.disabled = false;
+  });
+}
+</script>
