@@ -164,29 +164,40 @@ description: Infinity Circuit Season Standings — Shard Point leaderboard
     tbody.innerHTML = html || '<tr><td colspan="6" style="text-align:center;padding:2rem;color:rgba(255,255,255,0.4);">No players match current filter.</td></tr>';
   }
 
-  function parseRows(data) {
-    var rows = [];
-    if (!data || !data.table || !data.table.rows) return rows;
-    data.table.rows.forEach(function (row) {
-      if (!row.c) return;
-      function val(i) {
-        return (row.c[i] && row.c[i].v != null) ? String(row.c[i].v).trim() : '';
-      }
-      var name = val(1);
-      if (!name) return;
-      rows.push({
-        rank:          val(0),
-        name:          name,
-        username:      val(2),
-        stone:         val(3),
-        shards:        val(4),
-        eventsCounted: val(5),
-        totalEvents:   val(6),
-        champStanding: val(30)
-      });
+function parseRows(data) {
+  var rows = [];
+  if (!data || !data.table || !data.table.rows) return rows;
+  data.table.rows.forEach(function (row) {
+    if (!row.c) return;
+    function val(i) {
+      return (row.c[i] && row.c[i].v != null) ? String(row.c[i].v).trim() : '';
+    }
+    var name = val(1);
+    if (!name) return;
+    rows.push({
+      rank:          val(0),
+      name:          name,
+      username:      val(2),
+      stone:         val(3),
+      shards:        parseFloat(val(4)) || 0,
+      eventsCounted: val(5),
+      totalEvents:   val(6),
+      champStanding: val(30)
     });
-    return rows;
-  }
+  });
+
+  // Stone holders first, then by Shards descending
+  rows.sort(function(a, b) {
+    if (a.stone && !b.stone) return -1;
+    if (!a.stone && b.stone) return 1;
+    return b.shards - a.shards;
+  });
+
+  // Re-assign rank after sort
+  rows.forEach(function(r, i) { r.rank = i + 1; });
+
+  return rows;
+}
 
   var allRows = [];
 
