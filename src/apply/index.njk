@@ -1,0 +1,253 @@
+---
+layout: layouts/base.njk
+title: Host an Event
+description: Apply to host a sanctioned Infinity Circuit event at your store
+---
+
+<section class="hero" style="padding: 3rem 0 2.5rem;">
+  <div class="container">
+    <h1 class="hero-title" style="font-size: 2rem;">Host an Event</h1>
+    <p class="hero-subtitle">Event Application</p>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container" style="max-width: 720px;">
+
+    <div id="step-form">
+      <div class="section-header">
+        <span class="section-eyebrow">Sanctioned Events</span>
+        <h2 class="section-title">Apply to host a Shards Event</h2>
+      </div>
+
+      <div class="about-body" style="margin-bottom:2rem;">
+        <p>Any store in the Carolinas and Southern Virginia region can apply to host a sanctioned Infinity Circuit Shards Event. Applications must be submitted at least 30 days before the proposed event date.</p>
+        <p>Hosting a Shards Event is also the path to being considered for an Infinity Qualifier designation in future seasons. If you're interested in hosting a Qualifier, note that in the additional notes field.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Store / Venue Name <span class="form-required">*</span></label>
+        <input type="text" id="store-name" class="form-input" placeholder="e.g. Atomic Empire">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:2;">
+          <label class="form-label">City <span class="form-required">*</span></label>
+          <input type="text" id="store-city" class="form-input" placeholder="e.g. Durham">
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">State <span class="form-required">*</span></label>
+          <input type="text" id="store-state" class="form-input" placeholder="e.g. NC" maxlength="2">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Store Website or Social Media <span class="form-optional">(optional)</span></label>
+        <input type="url" id="store-website" class="form-input" placeholder="https://...">
+      </div>
+
+      <div class="form-divider"></div>
+
+      <div class="form-group">
+        <label class="form-label">Your Name <span class="form-required">*</span></label>
+        <input type="text" id="to-name" class="form-input" placeholder="Tournament Organizer name">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">Email <span class="form-required">*</span></label>
+          <input type="email" id="to-email" class="form-input" placeholder="your@email.com">
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">Discord Handle <span class="form-required">*</span></label>
+          <input type="text" id="to-discord" class="form-input" placeholder="e.g. @username">
+        </div>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">Proposed Event Date <span class="form-required">*</span></label>
+          <input type="date" id="event-date" class="form-input">
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">Estimated Attendance <span class="form-required">*</span></label>
+          <input type="number" id="event-attendance" class="form-input" placeholder="e.g. 12" min="1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Have you run a sanctioned MCP event before? <span class="form-required">*</span></label>
+        <select id="previous-events" class="form-input">
+          <option value="">Select...</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Additional Notes <span class="form-optional">(optional)</span></label>
+        <textarea id="app-notes" class="form-input" rows="4" placeholder="Anything else you'd like us to know — venue details, interest in hosting a Qualifier in future seasons, etc."></textarea>
+      </div>
+
+      <div id="form-error" class="form-error" style="display:none;"></div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" id="submit-btn" onclick="submitApplication()">Submit Application</button>
+      </div>
+    </div>
+
+    <!-- ── Confirmation ── -->
+    <div id="step-confirm" style="display:none; text-align:center; padding: 3rem 0;">
+      <div style="margin-bottom:1.5rem;">
+        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="28,3 51,15.5 51,40.5 28,53 5,40.5 5,15.5" fill="none" stroke="#9370c8" stroke-width="2"/>
+          <polygon points="28,11 44,20.5 44,35.5 28,45 12,35.5 12,20.5" fill="none" stroke="#9370c8" stroke-width="1.5" opacity="0.45"/>
+          <polygon points="28,19 36,24 36,32 28,37 20,32 20,24" fill="#9370c8"/>
+          <circle cx="28" cy="3" r="3" fill="#c41e3a"/>
+          <circle cx="51" cy="15.5" r="3" fill="#e8b800"/>
+          <circle cx="51" cy="40.5" r="3" fill="#e87200"/>
+          <circle cx="28" cy="53" r="3" fill="#1a5fe0"/>
+          <circle cx="5" cy="40.5" r="3" fill="#0da85e"/>
+          <circle cx="5" cy="15.5" r="3" fill="#c0357a"/>
+        </svg>
+      </div>
+      <h2 style="font-size:1.5rem; font-weight:600; color:#fff; margin-bottom:0.75rem;">Application Received</h2>
+      <p style="color:rgba(255,255,255,0.6); margin-bottom:0.5rem;">We'll review your application and get back to you via Discord or email within a few days.</p>
+      <p style="color:rgba(255,255,255,0.4); font-size:0.8125rem; margin-bottom:2rem;">In the meantime, feel free to join the Carolina Protocol Discord if you haven't already.</p>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="https://discord.gg/GPVX3B6C84" target="_blank" rel="noopener" class="btn btn-primary">Join the Discord</a>
+        <a href="/" class="btn btn-outline">Back to Home</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.form-group {
+  margin-bottom: 1.25rem;
+}
+.form-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.form-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.02em;
+}
+.form-required { color: var(--reality); }
+.form-optional { color: rgba(255,255,255,0.35); font-weight: 400; }
+.form-input {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(147,112,200,0.3);
+  border-radius: 4px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.85rem;
+  transition: border-color 0.15s;
+  outline: none;
+}
+.form-input:focus { border-color: var(--void-violet); }
+.form-input::placeholder { color: rgba(255,255,255,0.25); }
+select.form-input option { background: #1c1830; color: #fff; }
+textarea.form-input { resize: vertical; }
+.form-error {
+  background: rgba(196,30,58,0.1);
+  border: 1px solid rgba(196,30,58,0.3);
+  border-radius: 4px;
+  color: #f08090;
+  font-size: 0.875rem;
+  padding: 0.65rem 1rem;
+  margin-top: 1rem;
+}
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+.form-divider {
+  height: 1px;
+  background: rgba(147,112,200,0.15);
+  margin: 1.5rem 0;
+}
+.about-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+</style>
+
+<script>
+var ENDPOINT = 'https://script.google.com/macros/s/AKfycby5wQ2PIHH9IeKp5mgiPpcH8TO9JyhXXeaABTUDZOov4zxZ_r3tdeIgVLbZn40rBAznNg/exec';
+
+function submitApplication() {
+  var err = document.getElementById('form-error');
+  err.style.display = 'none';
+
+  var storeName    = document.getElementById('store-name').value.trim();
+  var city         = document.getElementById('store-city').value.trim();
+  var state        = document.getElementById('store-state').value.trim();
+  var toName       = document.getElementById('to-name').value.trim();
+  var toEmail      = document.getElementById('to-email').value.trim();
+  var toDiscord    = document.getElementById('to-discord').value.trim();
+  var eventDate    = document.getElementById('event-date').value;
+  var attendance   = document.getElementById('event-attendance').value;
+  var prevEvents   = document.getElementById('previous-events').value;
+
+  if (!storeName || !city || !state || !toName || !toEmail || !toDiscord || !eventDate || !attendance || !prevEvents) {
+    err.textContent = 'Please fill in all required fields.';
+    err.style.display = 'block';
+    return;
+  }
+
+  var btn = document.getElementById('submit-btn');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  var payload = {
+    type:            'application',
+    storeName:       storeName,
+    city:            city,
+    state:           state,
+    website:         document.getElementById('store-website').value.trim(),
+    toName:          toName,
+    toEmail:         toEmail,
+    toDiscord:       toDiscord,
+    proposedDate:    eventDate,
+    estAttendance:   parseInt(attendance),
+    previousEvents:  prevEvents,
+    notes:           document.getElementById('app-notes').value.trim()
+  };
+
+  fetch(ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    mode: 'no-cors'
+  })
+  .then(function() {
+    document.getElementById('step-form').style.display = 'none';
+    document.getElementById('step-confirm').style.display = 'block';
+  })
+  .catch(function() {
+    err.textContent = 'Submission failed. Please try again or contact us on Discord.';
+    err.style.display = 'block';
+    btn.textContent = 'Submit Application';
+    btn.disabled = false;
+  });
+}
+</script>
