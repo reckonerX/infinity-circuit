@@ -84,5 +84,57 @@
     </div>
   </footer>
 
+<form id="nl-popup-form" onsubmit="submitPopup(event)" style="margin:0;">
+  <input type="email" id="nl-popup-email" placeholder="your@email.com" required
+    style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(147,112,200,0.3);border-radius:4px;color:#fff;font-family:var(--font);font-size:0.8125rem;padding:0.55rem 0.75rem;outline:none;margin-bottom:0.6rem;box-sizing:border-box;">
+  <button type="submit" class="btn btn-primary" style="width:100%;font-size:0.8125rem;">Subscribe</button>
+</form>
+<div id="nl-popup-success" style="display:none;font-size:0.875rem;color:#0da85e;text-align:center;padding:0.5rem 0;">You're in. We'll be in touch.</div>
+
+<script>
+(function() {
+  var DISMISSED_KEY = 'ic_nl_dismissed';
+  var DELAY_MS = 8000;
+  var SNOOZE_DAYS = 7;
+
+  function shouldShow() {
+    var dismissed = localStorage.getItem(DISMISSED_KEY);
+    if (!dismissed) return true;
+    var daysAgo = (Date.now() - parseInt(dismissed)) / (1000 * 60 * 60 * 24);
+    return daysAgo > SNOOZE_DAYS;
+  }
+
+  window.dismissPopup = function() {
+    document.getElementById('nl-popup').style.display = 'none';
+    localStorage.setItem(DISMISSED_KEY, Date.now().toString());
+  };
+
+  window.submitPopup = function(e) {
+    e.preventDefault();
+    var email = document.getElementById('nl-popup-email').value;
+    var formData = new FormData();
+    formData.append('fields[email]', email);
+    formData.append('ml-submit', '1');
+    formData.append('anticsrf', 'true');
+
+    fetch('https://assets.mailerlite.com/jsonp/2395914/forms/189053535392892625/subscribe', {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors'
+    }).then(function() {
+      document.getElementById('nl-popup-form').style.display = 'none';
+      document.getElementById('nl-popup-success').style.display = 'block';
+      setTimeout(function() { dismissPopup(); }, 2500);
+    });
+  };
+
+  if (shouldShow()) {
+    setTimeout(function() {
+      document.getElementById('nl-popup').style.display = 'block';
+    }, DELAY_MS);
+  }
+})();
+</script>
+
 </body>
 </html>

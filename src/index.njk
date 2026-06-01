@@ -167,6 +167,42 @@ description: "The Infinity Circuit is a regional Marvel: Crisis Protocol competi
   </div>
 </section>
 
+<!-- ── Newsletter ── -->
+<section class="section section-tint" style="padding:3rem 0;">
+  <div class="container" style="max-width:560px; text-align:center;">
+    <span class="section-eyebrow">Newsletter</span>
+    <h2 class="section-title" style="margin-bottom:0.75rem;">Stay in the Loop</h2>
+    <p style="color:rgba(255,255,255,0.55); margin-bottom:1.5rem; font-size:0.9rem;">Event updates, results, and Championship news delivered to your inbox.</p>
+    <form id="home-nl-form" onsubmit="submitHomeNewsletter(event)" style="display:flex; gap:0.75rem; max-width:400px; margin:0 auto;">
+      <input type="email" id="home-nl-email" placeholder="your@email.com" required
+        style="flex:1; background:rgba(255,255,255,0.06); border:1px solid rgba(147,112,200,0.3); border-radius:4px; color:#fff; font-family:var(--font); font-size:0.875rem; padding:0.6rem 0.85rem; outline:none;">
+      <button type="submit" class="btn btn-primary" style="white-space:nowrap;">Subscribe</button>
+    </form>
+    <div id="home-nl-success" style="display:none; margin-top:1rem; font-size:0.875rem; color:#0da85e;">You're in. We'll be in touch.</div>
+  </div>
+</section>
+
+<script>
+window.submitHomeNewsletter = function(e) {
+  e.preventDefault();
+  var email = document.getElementById('home-nl-email').value;
+  var formData = new FormData();
+  formData.append('fields[email]', email);
+  formData.append('ml-submit', '1');
+  formData.append('anticsrf', 'true');
+
+  fetch('https://assets.mailerlite.com/jsonp/2395914/forms/189053535392892625/subscribe', {
+    method: 'POST',
+    body: formData,
+    mode: 'no-cors'
+  }).then(function() {
+    document.getElementById('home-nl-form').style.display = 'none';
+    document.getElementById('home-nl-success').style.display = 'block';
+  });
+};
+</script>
+<script src="https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b" type="text/javascript"></script>
+
 <style>
 .how-grid {
   display: grid;
@@ -593,4 +629,5 @@ rows.forEach(function(r, i) { r.displayRank = i + 1; });
     })
     .catch(function() {});
 })();
+
 </script>

@@ -1,0 +1,66 @@
+name: Discord Notifications
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify-news:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check for new Decap CMS post
+        id: check
+        run: |
+          # Get files changed in this commit
+          CHANGED=$(git diff --name-only HEAD~1 HEAD)
+          echo "Changed files: $CHANGED"
+          
+          # Look for new markdown files in src/posts/
+          NEW_POST=$(echo "$CHANGED" | grep '^src/posts/.*\.md$' | head -1)
+          
+          if [ -z "$NEW_POST" ]; then
+            echo "No new post detected"
+            echo "has_post=false" >> $GITHUB_OUTPUT
+          else
+            echo "New post detected: $NEW_POST"
+            echo "has_post=true" >> $GITHUB_OUTPUT
+            echo "post_file=$NEW_POST" >> $GITHUB_OUTPUT
+            
+            # Extract front matter fields
+            TITLE=$(grep '^title:' "$NEW_POST" | head -1 | sed 's/^title:[[:space:]]*//' | tr -d '"')
+            DESCRIPTION=$(grep '^description:' "$NEW_POST" | head -1 | sed 's/^description:[[:space:]]*//' | tr -d '"')
+            DATE=$(grep '^date:' "$NEW_POST" | head -1 | sed 's/^date:[[:space:]]*//' | cut -c1-10)
+            
+            # Build URL from filename
+            SLUG=$(basename "$NEW_POST" .md | sed 's/^[0-9]*-[0-9]*-[0-9]*-//')
+            POST_URL="https://infinity-circuit.pages.dev/posts/$SLUG/"
+            
+            echo "title=$TITLE" >> $GITHUB_OUTPUT
+            echo "description=$DESCRIPTION" >> $GITHUB_OUTPUT
+            echo "date=$DATE" >> $GITHUB_OUTPUT
+            echo "url=$POST_URL" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Post to Discord circuit-news
+        if: steps.check.outputs.has_post == 'true'
+        run: |
+          curl -X POST "${{ secrets.DISCORD_CIRCUIT_NEWS_WEBHOOK }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "${{ steps.check.outputs.title }}",
+                "description": "${{ steps.check.outputs.description }}",
+                "url": "${{ steps.check.outputs.url }}",
+                "color": 9658312,
+                "footer": {
+                  "text": "Infinity Circuit • ${{ steps.check.outputs.date }}"
+                },
+                "author": {
+                  "name": "INFINITY CIRCUIT NEWS"
+                }
+              }]
+            }'
