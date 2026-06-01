@@ -1,0 +1,355 @@
+---
+layout: layouts/base.njk
+title: Gallery
+description: Photos from Infinity Circuit sanctioned events
+---
+
+<section class="hero" style="padding: 3rem 0 2.5rem;">
+  <div class="container">
+    <h1 class="hero-title" style="font-size: 2rem;">Gallery</h1>
+    <p class="hero-subtitle">Infinity Circuit Events</p>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.75rem;">
+      <div id="gallery-status" style="font-size:0.8125rem; color:rgba(255,255,255,0.45);">Loading...</div>
+      <select id="sort-order" class="gallery-select" onchange="filterGallery()">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:1.5rem;">
+  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+    <span style="font-size:0.7rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.35); width:48px;">Venue</span>
+    <div id="venue-filters" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <button class="filter-btn active" data-venue="all" onclick="setVenueFilter(this)">All</button>
+    </div>
+  </div>
+  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+    <span style="font-size:0.7rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.35); width:48px;">Type</span>
+    <div id="type-filters" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <button class="filter-btn active" data-type="all" onclick="setTypeFilter(this)">All</button>
+    </div>
+  </div>
+</div>
+
+    <div id="gallery-grid" class="gallery-grid">
+      <p style="color:rgba(255,255,255,0.4);">Loading photos...</p>
+    </div>
+
+    <div id="gallery-empty" style="display:none; text-align:center; padding:4rem 0; color:rgba(255,255,255,0.4);">
+      No photos found for this venue.
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Lightbox ── -->
+<div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:1000; align-items:center; justify-content:center; flex-direction:column;">
+  <button onclick="closeLightbox()" style="position:absolute; top:1.5rem; right:1.5rem; background:none; border:none; color:rgba(255,255,255,0.6); font-size:2rem; cursor:pointer; line-height:1;">×</button>
+  <button onclick="prevPhoto()" style="position:absolute; left:1.5rem; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.6); font-size:2rem; cursor:pointer; line-height:1;">‹</button>
+  <button onclick="nextPhoto()" style="position:absolute; right:1.5rem; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.6); font-size:2rem; cursor:pointer; line-height:1;">›</button>
+  <img id="lightbox-img" src="" alt="" style="max-width:90vw; max-height:75vh; object-fit:contain; border-radius:4px;">
+  <div style="margin-top:1rem; text-align:center; max-width:600px; padding:0 2rem;">
+    <div id="lightbox-meta" style="font-size:0.75rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--void-violet); margin-bottom:0.35rem;"></div>
+    <div id="lightbox-caption" style="font-size:0.9rem; color:rgba(255,255,255,0.7);"></div>
+  </div>
+</div>
+
+<style>
+.gallery-select {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(147,112,200,0.3);
+  border-radius: 4px;
+  color: rgba(255,255,255,0.75);
+  font-family: var(--font);
+  font-size: 0.8125rem;
+  padding: 0.4rem 0.75rem;
+  outline: none;
+  cursor: pointer;
+}
+.gallery-select option { background: #1c1830; color: #fff; }
+
+.filter-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(147,112,200,0.25);
+  color: rgba(255,255,255,0.55);
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0.85rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-btn:hover {
+  border-color: var(--void-violet);
+  color: rgba(255,255,255,0.85);
+}
+.filter-btn.active {
+  background: var(--void-violet);
+  border-color: var(--void-violet);
+  color: #fff;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(147,112,200,0.15);
+  cursor: pointer;
+  background: rgba(255,255,255,0.04);
+}
+.gallery-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s;
+}
+.gallery-item:hover img {
+  transform: scale(1.04);
+}
+.gallery-item-info {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(147,112,200,0.1);
+}
+.gallery-item-meta {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--void-violet);
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+.gallery-item-caption {
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.4;
+}
+</style>
+
+<script>
+(function () {
+  var SHEET_ID = '1eFyIt13Av9MmEx0pi0Kca9gxCJJdEs4lnV9slVSJQFE';
+  var GID = '866280774';
+  var URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&gid=' + GID;
+
+  var allPhotos = [];
+  var visiblePhotos = [];
+  var currentIndex = 0;
+  var activeVenue = 'all';
+  var activeType = 'all';
+
+
+  function esc(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+function formatDate(v) {
+  if (!v) return '';
+  var m = String(v).match(/Date\((\d+),(\d+),(\d+)\)/);
+  if (m) {
+    var d = new Date(parseInt(m[1]), parseInt(m[2]), parseInt(m[3]));
+    return d.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  }
+  return String(v);
+}
+
+function formatMeta(photo) {
+  var parts = [];
+  if (photo.venue) parts.push(photo.venue);
+  if (photo.date) parts.push(formatDate(photo.date));
+  if (photo.eventType) parts.push(photo.eventType);
+  return parts.join(' · ');
+}
+
+  function parsePhotos(data) {
+    var photos = [];
+    if (!data || !data.table || !data.table.rows) return photos;
+    data.table.rows.forEach(function(row) {
+      if (!row.c) return;
+      function val(i) {
+        if (!row.c[i] || row.c[i].v == null) return '';
+        return String(row.c[i].v).trim();
+      }
+      var status = val(5);
+      if (status !== 'PUBLISHED') return;
+      var filename = val(0);
+      if (!filename) return;
+      photos.push({
+        filename:  filename,
+        venue:     val(1),
+        date: row.c[2] ? row.c[2].v : '',
+        eventType: val(3),
+        caption:   val(4)
+      });
+    });
+    return photos;
+  }
+
+  function renderGrid(photos) {
+    var grid = document.getElementById('gallery-grid');
+    var empty = document.getElementById('gallery-empty');
+
+    if (!photos.length) {
+      grid.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+
+    empty.style.display = 'none';
+    visiblePhotos = photos;
+
+    grid.innerHTML = photos.map(function(photo, i) {
+      var meta = formatMeta(photo);
+      return '<div class="gallery-item" onclick="openLightbox(' + i + ')">'
+        + '<img src="/assets/images/gallery/' + esc(photo.filename) + '" alt="' + esc(photo.caption || meta) + '" loading="lazy">'
+        + '<div class="gallery-item-info">'
+          + (meta ? '<div class="gallery-item-meta">' + esc(meta) + '</div>' : '')
+          + (photo.caption ? '<div class="gallery-item-caption">' + esc(photo.caption) + '</div>' : '')
+        + '</div>'
+        + '</div>';
+    }).join('');
+  }
+
+  window.setVenueFilter = function(btn) {
+    activeVenue = btn.dataset.venue;
+    document.querySelectorAll('#venue-filters .filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    filterGallery();
+  };
+  
+  window.setTypeFilter = function(btn) {
+    activeType = btn.dataset.type;
+    document.querySelectorAll('#type-filters .filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    filterGallery();
+  };
+
+  window.filterGallery = function() {
+    var sortOrder = document.getElementById('sort-order').value;
+    var filtered = allPhotos.slice();
+
+    if (activeVenue !== 'all') {
+      filtered = filtered.filter(function(p) { return p.venue === activeVenue; });
+    }
+
+    if (activeType !== 'all') {
+      filtered = filtered.filter(function(p) { return p.eventType === activeType; });
+    }
+
+    filtered.sort(function(a, b) {
+      if (sortOrder === 'newest') return a.date < b.date ? 1 : -1;
+      return a.date > b.date ? 1 : -1;
+    });
+
+    renderGrid(filtered);
+  };
+
+  window.openLightbox = function(index) {
+    currentIndex = index;
+    showLightboxPhoto();
+    var lb = document.getElementById('lightbox');
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeLightbox = function() {
+    document.getElementById('lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  window.prevPhoto = function() {
+    currentIndex = (currentIndex - 1 + visiblePhotos.length) % visiblePhotos.length;
+    showLightboxPhoto();
+  };
+
+  window.nextPhoto = function() {
+    currentIndex = (currentIndex + 1) % visiblePhotos.length;
+    showLightboxPhoto();
+  };
+
+  function showLightboxPhoto() {
+    var photo = visiblePhotos[currentIndex];
+    document.getElementById('lightbox-img').src = '/assets/images/gallery/' + photo.filename;
+    document.getElementById('lightbox-img').alt = photo.caption || formatMeta(photo);
+    document.getElementById('lightbox-meta').textContent = formatMeta(photo);
+    document.getElementById('lightbox-caption').textContent = photo.caption || '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (document.getElementById('lightbox').style.display === 'none') return;
+    if (e.key === 'ArrowLeft') prevPhoto();
+    if (e.key === 'ArrowRight') nextPhoto();
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  fetch(URL)
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      var json = text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, '');
+      var data = JSON.parse(json);
+      allPhotos = parsePhotos(data);
+
+      allPhotos.sort(function(a, b) {
+        return a.date < b.date ? 1 : -1;
+      });
+
+      // Build venue filter pills
+var venues = [];
+allPhotos.forEach(function(p) {
+  if (p.venue && venues.indexOf(p.venue) === -1) venues.push(p.venue);
+});
+
+var filterContainer = document.getElementById('venue-filters');
+venues.forEach(function(venue) {
+  var btn = document.createElement('button');
+  btn.className = 'filter-btn';
+  btn.dataset.venue = venue;
+  btn.textContent = venue;
+  btn.onclick = function() { setVenueFilter(btn); };
+  filterContainer.appendChild(btn);
+});
+
+// Build type filter pills
+var types = [];
+allPhotos.forEach(function(p) {
+  if (p.eventType && types.indexOf(p.eventType) === -1) types.push(p.eventType);
+});
+
+var typeContainer = document.getElementById('type-filters');
+types.forEach(function(type) {
+  var btn = document.createElement('button');
+  btn.className = 'filter-btn';
+  btn.dataset.type = type;
+  btn.textContent = type;
+  btn.onclick = function() { setTypeFilter(btn); };
+  typeContainer.appendChild(btn);
+});
+
+      renderGrid(allPhotos);
+      visiblePhotos = allPhotos;
+
+      document.getElementById('gallery-status').textContent =
+        allPhotos.length + ' photo' + (allPhotos.length !== 1 ? 's' : '');
+    })
+    .catch(function() {
+      document.getElementById('gallery-grid').innerHTML = '<p style="color:rgba(255,255,255,0.4);">Could not load gallery.</p>';
+      document.getElementById('gallery-status').textContent = 'Error loading gallery';
+    });
+})();
+</script>
