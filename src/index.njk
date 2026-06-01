@@ -40,6 +40,37 @@ description: "The Infinity Circuit is a regional Marvel: Crisis Protocol competi
   </div>
 </section>
 
+<!-- ── Champion Section (hidden until data exists) ── -->
+<div id="champion-section" style="display:none;">
+
+  <!-- Current Champion -->
+  <section style="background:var(--cosmic-dark); border-bottom:1px solid rgba(147,112,200,0.15); text-align:center; padding:5rem 0; position:relative; overflow:hidden;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%, rgba(147,112,200,0.15) 0%, transparent 65%);pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <span class="section-eyebrow">Infinity Gauntlet Champion</span>
+      <div id="champion-season" style="font-size:0.8125rem; color:rgba(255,255,255,0.35); margin-bottom:2.5rem;"></div>
+
+      <div style="position:relative; width:260px; height:260px; margin:0 auto 1.75rem; display:flex; align-items:center; justify-content:center;">
+        <div id="champ-portrait-wrap" style="position:absolute; inset:0; border-radius:50%;"></div>
+        <div id="champion-photo-wrap" style="display:none; width:200px; height:200px; border-radius:50%; overflow:hidden; border:3px solid rgba(147,112,200,0.5); position:relative; z-index:1;">
+          <img id="champion-photo" src="" alt="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div id="champion-photo-placeholder" style="width:200px;height:200px;border-radius:50%;background:rgba(147,112,200,0.1);border:2px solid rgba(147,112,200,0.2);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;">
+          <svg width="72" height="72" viewBox="-4 -4 64 64" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="28,3 51,15.5 51,40.5 28,53 5,40.5 5,15.5" fill="none" stroke="#9370c8" stroke-width="2"/>
+            <polygon points="28,19 36,24 36,32 28,37 20,32 20,24" fill="#9370c8"/>
+          </svg>
+        </div>
+      </div>
+
+      <h2 id="champion-name" style="font-size:2.75rem;font-weight:600;color:#fff;letter-spacing:0.03em;margin-bottom:0.5rem;"></h2>
+      <div id="champion-hometown" style="font-size:0.9375rem;color:rgba(255,255,255,0.45);margin-bottom:0.4rem;"></div>
+      <div id="champion-shards" style="font-size:0.875rem;color:var(--void-violet);font-weight:500;"></div>
+    </div>
+  </section>
+
+</div>
+
 <!-- ── How It Works ── -->
 <section class="section section-tint">
   <div class="container">
@@ -122,6 +153,17 @@ description: "The Infinity Circuit is a regional Marvel: Crisis Protocol competi
         </tbody>
       </table>
     </div>
+  </div>
+</section>
+
+<!-- ── Hall of Heroes (hidden until data exists) ── -->
+<section id="hall-section" style="display:none;background:var(--cosmic-dark);padding:4rem 0;border-top:1px solid rgba(147,112,200,0.12);">
+  <div class="container">
+    <div class="section-header" style="text-align:center;margin-bottom:3rem;">
+      <span class="section-eyebrow">Hall of Heroes</span>
+      <h2 class="section-title" style="font-size:1.75rem;">Past Infinity Gauntlet Champions</h2>
+    </div>
+    <div id="hall-grid" style="display:flex;flex-wrap:wrap;justify-content:center;gap:3rem;"></div>
   </div>
 </section>
 
@@ -385,5 +427,170 @@ rows.forEach(function(r, i) { r.displayRank = i + 1; });
     .catch(function() {
       document.getElementById('home-standings-body').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;color:rgba(255,255,255,0.4);">Could not load standings.</td></tr>';
     });
+})();
+
+// ── Champions ──
+(function () {
+  var SHEET_ID = '1eFyIt13Av9MmEx0pi0Kca9gxCJJdEs4lnV9slVSJQFE';
+  var GID = '359881057';
+  var URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&gid=' + GID;
+
+  function esc(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Glow pulse on champion portrait rings
+  function animateChampionRings() {
+    var photo = document.getElementById('champion-photo-wrap');
+    var placeholder = document.getElementById('champion-photo-placeholder');
+
+    var stones = [
+      [196, 30,  58 ],
+      [232, 184, 0  ],
+      [232, 114, 0  ],
+      [26,  95,  224],
+      [13,  168, 94 ],
+      [192, 53,  122],
+    ];
+
+    var t = 0;
+    var SPEED = 0.018; // controls how fast it cycles
+
+    function step() {
+      t += SPEED;
+
+      // One full pulse per stone — t cycles 0 to 2PI per stone
+      var totalCycle = Math.PI * 2 * stones.length;
+      var pos = t % totalCycle;
+      var stoneIndex = Math.floor(pos / (Math.PI * 2)) % stones.length;
+      var phaseWithinStone = pos % (Math.PI * 2);
+
+      // Color blend: at phase PI (peak), we're fully on current stone
+      // approaching PI, blend from previous; leaving PI, blend toward next
+      var peakBlend = Math.sin(phaseWithinStone / 2); // 0→1→0 over full cycle
+      peakBlend = Math.pow(peakBlend, 0.4); // sharpen the peak
+
+      var prev = (stoneIndex - 1 + stones.length) % stones.length;
+      var curr = stoneIndex;
+      var halfPhase = phaseWithinStone < Math.PI;
+      var fromIdx = halfPhase ? prev : curr;
+      var toIdx = halfPhase ? curr : (stoneIndex + 1) % stones.length;
+      var localBlend = halfPhase
+        ? phaseWithinStone / Math.PI
+        : (phaseWithinStone - Math.PI) / Math.PI;
+      localBlend = localBlend * localBlend * (3 - 2 * localBlend);
+
+      var c1 = stones[fromIdx];
+      var c2 = stones[toIdx];
+      var r = Math.round(c1[0] + (c2[0] - c1[0]) * localBlend);
+      var g = Math.round(c1[1] + (c2[1] - c1[1]) * localBlend);
+      var b = Math.round(c1[2] + (c2[2] - c1[2]) * localBlend);
+
+      // Intensity peaks at phase PI
+      var intensity = 0.2 + 0.65 * Math.sin(phaseWithinStone / 2);
+      var size = Math.round(20 + 30 * Math.sin(phaseWithinStone / 2));
+
+      var shadow = '0 0 ' + size + 'px ' + Math.round(size / 3) + 'px rgba(' + r + ',' + g + ',' + b + ',' + intensity.toFixed(2) + ')';
+      var target = photo && photo.style.display !== 'none' ? photo : placeholder;
+      if (target) target.style.boxShadow = shadow;
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function hallCard(p, index) {
+    var id = 'hall-glow-' + index;
+    var photo = p.photo
+      ? '<img src="' + esc(p.photo) + '" alt="' + esc(p.name) + '" style="width:100%;height:100%;object-fit:cover;display:block;">'
+      : '<div style="width:100%;height:100%;background:rgba(147,112,200,0.1);display:flex;align-items:center;justify-content:center;"><svg width="36" height="36" viewBox="-4 -4 64 64" xmlns="http://www.w3.org/2000/svg"><polygon points="28,3 51,15.5 51,40.5 28,53 5,40.5 5,15.5" fill="none" stroke="#9370c8" stroke-width="2"/><polygon points="28,19 36,24 36,32 28,37 20,32 20,24" fill="#9370c8"/></svg></div>';
+
+    return '<div style="text-align:center;width:160px;">'
+      + '<div id="' + id + '" style="width:120px;height:120px;border-radius:50%;overflow:hidden;margin:0 auto 1rem;border:2px solid rgba(147,112,200,0.2);position:relative;opacity:0.85;">'
+        + photo
+        + '<div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 70% 30%, rgba(255,255,255,0.06) 0%, transparent 60%);"></div>'
+      + '</div>'
+      + '<div style="font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(147,112,200,0.6);margin-bottom:0.3rem;">' + esc(p.season) + '</div>'
+      + '<div style="font-size:1rem;font-weight:600;color:rgba(255,255,255,0.75);margin-bottom:0.2rem;">' + esc(p.name) + '</div>'
+      + (p.hometown ? '<div style="font-size:0.75rem;color:rgba(255,255,255,0.3);">' + esc(p.hometown) + '</div>' : '')
+      + '</div>';
+  }
+
+  // Subtle async glow pulse on hall cards
+  function animateHallCards(count) {
+    for (var i = 0; i < count; i++) {
+      (function(idx) {
+        var el = document.getElementById('hall-glow-' + idx);
+        if (!el) return;
+        var t = idx * 1.2; // offset each card
+        function step() {
+          t += 0.004;
+          var opacity = 0.7 + 0.15 * Math.sin(t);
+          var border = 0.15 + 0.15 * Math.sin(t + Math.PI * 0.5);
+          el.style.opacity = opacity.toFixed(3);
+          el.style.borderColor = 'rgba(147,112,200,' + border.toFixed(3) + ')';
+          requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      })(i);
+    }
+  }
+
+  fetch(URL)
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      var json = text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, '');
+      var data = JSON.parse(json);
+      if (!data || !data.table || !data.table.rows) return;
+
+      var current = null;
+      var past = [];
+
+      data.table.rows.forEach(function(row) {
+        if (!row.c) return;
+        function val(i) {
+          return (row.c[i] && row.c[i].v != null) ? String(row.c[i].v).trim() : '';
+        }
+        var entry = {
+          season:   val(0),
+          name:     val(1),
+          hometown: val(2),
+          shards:   val(3),
+          photo:    val(4),
+          status:   val(5)
+        };
+        if (!entry.name) return;
+        if (entry.status === 'CURRENT') current = entry;
+        else if (entry.status === 'PAST') past.push(entry);
+      });
+
+      if (!current) return;
+
+      document.getElementById('champion-section').style.display = 'block';
+      document.getElementById('champion-season').textContent = current.season;
+      document.getElementById('champion-name').textContent = current.name;
+
+      if (current.hometown) {
+        document.getElementById('champion-hometown').textContent = current.hometown;
+      }
+      if (current.shards) {
+        document.getElementById('champion-shards').textContent = current.shards + ' Shard Points';
+      }
+      if (current.photo) {
+        document.getElementById('champion-photo').src = current.photo;
+        document.getElementById('champion-photo').alt = current.name;
+        document.getElementById('champion-photo-wrap').style.display = 'block';
+        document.getElementById('champion-photo-placeholder').style.display = 'none';
+      }
+
+      animateChampionRings();
+
+      if (past.length) {
+        document.getElementById('hall-section').style.display = 'block';
+        document.getElementById('hall-grid').innerHTML = past.map(hallCard).join('');
+        animateHallCards(past.length);
+      }
+    })
+    .catch(function() {});
 })();
 </script>
