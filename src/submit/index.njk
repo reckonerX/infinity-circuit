@@ -164,9 +164,7 @@ description: Submit event results to the Infinity Circuit
   transition: border-color 0.15s;
   outline: none;
 }
-.form-input:focus {
-  border-color: var(--void-violet);
-}
+.form-input:focus { border-color: var(--void-violet); }
 .form-input::placeholder { color: rgba(255,255,255,0.25); }
 select.form-input option { background: #1c1830; color: #fff; }
 textarea.form-input { resize: vertical; }
@@ -193,12 +191,25 @@ textarea.form-input { resize: vertical; }
   flex-wrap: wrap;
 }
 
-/* Player list */
+/* ── Player list ── */
 .player-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
+
+.player-list-header {
+  display: grid;
+  grid-template-columns: 32px 24px 1fr 1fr 1fr 1fr 32px;
+  gap: 0.5rem;
+  padding: 0 1rem 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .player-row {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(147,112,200,0.2);
@@ -211,22 +222,25 @@ textarea.form-input { resize: vertical; }
   cursor: grab;
   transition: border-color 0.15s, background 0.15s;
 }
-.player-row:active { cursor: grabbing; }
+
 .player-row.dragging {
   border-color: var(--void-violet);
   background: rgba(147,112,200,0.1);
   opacity: 0.8;
 }
+
 .player-row.drag-over {
   border-color: var(--void-violet);
   border-style: dashed;
 }
+
 .player-rank {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--void-violet);
   text-align: center;
 }
+
 .drag-handle {
   color: rgba(255,255,255,0.2);
   font-size: 1rem;
@@ -234,6 +248,7 @@ textarea.form-input { resize: vertical; }
   cursor: grab;
   user-select: none;
 }
+
 .player-input {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(147,112,200,0.2);
@@ -248,6 +263,7 @@ textarea.form-input { resize: vertical; }
 }
 .player-input:focus { border-color: var(--void-violet); }
 .player-input::placeholder { color: rgba(255,255,255,0.2); font-size: 0.75rem; }
+
 .player-remove {
   background: none;
   border: none;
@@ -260,17 +276,33 @@ textarea.form-input { resize: vertical; }
 }
 .player-remove:hover { color: var(--reality); }
 
-/* Column headers */
-.player-list-header {
-  display: grid;
-  grid-template-columns: 32px 24px 1fr 1fr 1fr 1fr 32px;
-  gap: 0.5rem;
-  padding: 0 1rem 0.35rem;
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: rgba(255,255,255,0.35);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+/* Mobile/desktop remove button visibility */
+.mobile-remove { display: none; }
+.desktop-remove { display: block; }
+
+/* Mobile player row header (rank + drag + remove) */
+.player-row-header { display: none; }
+
+/* ── Mobile styles ── */
+@media (max-width: 640px) {
+  .player-list-header { display: none; }
+
+  .player-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    cursor: default;
+  }
+
+  .player-row-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .drag-handle { display: none; }
+  .mobile-remove { display: block; }
+  .desktop-remove { display: none; }
 }
 </style>
 
@@ -360,13 +392,16 @@ function addPlayer() {
   row.className = 'player-row';
   row.draggable = true;
   row.innerHTML =
-    '<div class="player-rank">' + placement + '</div>'
+    '<div class="player-row-header">'
+    + '<div class="player-rank">' + placement + '</div>'
     + '<div class="drag-handle" title="Drag to reorder">⠿</div>'
-    + '<input class="player-input" type="text" placeholder="Full name" data-field="name">'
-    + '<input class="player-input" type="number" placeholder="e.g. 17481" data-field="longshanks" title="Numerical Longshanks ID">'
-    + '<input class="player-input" type="text" placeholder="Discord" data-field="discord">'
-    + '<input class="player-input" type="email" placeholder="Email" data-field="email">'
-    + '<button class="player-remove" onclick="removePlayer(this)" title="Remove">×</button>';
+    + '<button class="player-remove mobile-remove" onclick="removePlayer(this)" title="Remove">×</button>'
+    + '</div>'
+    + '<input class="player-input" type="text" placeholder="Full name" data-field="name" data-label="Name *">'
+    + '<input class="player-input" type="number" placeholder="e.g. 17481" data-field="longshanks" title="Numerical Longshanks ID" data-label="LSID *">'
+    + '<input class="player-input" type="text" placeholder="Discord" data-field="discord" data-label="Discord">'
+    + '<input class="player-input" type="email" placeholder="Email" data-field="email" data-label="Email">'
+    + '<button class="player-remove desktop-remove" onclick="removePlayer(this)" title="Remove">×</button>';
 
   row.addEventListener('dragstart', function(e) {
     dragSrc = row;
