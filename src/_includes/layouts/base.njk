@@ -84,12 +84,18 @@
     </div>
   </footer>
 
-<form id="nl-popup-form" onsubmit="submitPopup(event)" style="margin:0;">
-  <input type="email" id="nl-popup-email" placeholder="your@email.com" required
-    style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(147,112,200,0.3);border-radius:4px;color:#fff;font-family:var(--font);font-size:0.8125rem;padding:0.55rem 0.75rem;outline:none;margin-bottom:0.6rem;box-sizing:border-box;">
-  <button type="submit" class="btn btn-primary" style="width:100%;font-size:0.8125rem;">Subscribe</button>
-</form>
-<div id="nl-popup-success" style="display:none;font-size:0.875rem;color:#0da85e;text-align:center;padding:0.5rem 0;">You're in. We'll be in touch.</div>
+<div id="nl-popup" style="display:none; position:fixed; bottom:1.5rem; right:1.5rem; z-index:200; width:320px; background:#1c1830; border:1px solid rgba(147,112,200,0.3); border-radius:8px; padding:1.5rem; box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+  <button onclick="dismissPopup()" style="position:absolute;top:0.75rem;right:0.75rem;background:none;border:none;color:rgba(255,255,255,0.35);font-size:1.25rem;cursor:pointer;line-height:1;">×</button>
+  <div style="font-size:0.7rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--void-violet);margin-bottom:0.4rem;">Newsletter</div>
+  <div style="font-size:1rem;font-weight:600;color:#fff;margin-bottom:0.4rem;">Stay in the Loop</div>
+  <p style="font-size:0.8125rem;color:rgba(255,255,255,0.55);margin-bottom:1rem;line-height:1.5;">Event updates, results, and Championship news delivered to your inbox.</p>
+  <form id="nl-popup-form" onsubmit="submitPopup(event)" style="margin:0;">
+    <input type="email" id="nl-popup-email" placeholder="your@email.com" required
+      style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(147,112,200,0.3);border-radius:4px;color:#fff;font-family:var(--font);font-size:0.8125rem;padding:0.55rem 0.75rem;outline:none;margin-bottom:0.6rem;box-sizing:border-box;">
+    <button type="submit" class="btn btn-primary" style="width:100%;font-size:0.8125rem;">Subscribe</button>
+  </form>
+  <div id="nl-popup-success" style="display:none;font-size:0.875rem;color:#0da85e;text-align:center;padding:0.5rem 0;">You're in. We'll be in touch.</div>
+</div>
 
 <script>
 (function() {
