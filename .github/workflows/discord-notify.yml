@@ -37,7 +37,7 @@ jobs:
             
             # Build URL from filename
             SLUG=$(basename "$NEW_POST" .md | sed 's/^[0-9]*-[0-9]*-[0-9]*-//')
-            POST_URL="https://infinity-circuit.pages.dev/posts/$SLUG/"
+            POST_URL="https://infinitycircuitmcp.com/posts/$SLUG/"
             
             echo "title=$TITLE" >> $GITHUB_OUTPUT
             echo "description=$DESCRIPTION" >> $GITHUB_OUTPUT
