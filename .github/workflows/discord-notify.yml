@@ -36,7 +36,7 @@ jobs:
             DATE=$(grep '^date:' "$NEW_POST" | head -1 | sed 's/^date:[[:space:]]*//' | cut -c1-10)
             
             # Build URL from filename
-            SLUG=$(basename "$NEW_POST" .md | sed 's/^[0-9]*-[0-9]*-[0-9]*-//')
+            SLUG=$(basename "$NEW_POST" .md)
             POST_URL="https://infinitycircuitmcp.com/posts/$SLUG/"
             
             echo "title=$TITLE" >> $GITHUB_OUTPUT
