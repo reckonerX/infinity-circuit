@@ -27,31 +27,28 @@ export async function onRequestGet(context) {
       return new Response(`OAuth error: ${tokenData.error_description}`, { status: 400 });
     }
 
-    const token = tokenData.access_token;
-    const provider = 'github';
-    const message = JSON.stringify({ token, provider });
+    const script = `
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+(function() {
+  function receiveMessage(e) {
+    window.opener.postMessage(
+      'authorization:github:success:${JSON.stringify({ token: tokenData.access_token, provider: 'github' })}',
+      e.origin
+    );
+  }
+  window.addEventListener('message', receiveMessage, false);
+  window.opener.postMessage('authorizing:github', '*');
+})();
+<\/script>
+</body>
+</html>`;
 
-    const html = '<!DOCTYPE html><html><body><script>(function() {'
-      + 'var token = ' + JSON.stringify(token) + ';'
-      + 'var provider = "github";'
-      + 'var msg = "authorization:" + provider + ":success:" + JSON.stringify({ token: token, provider: provider });'
-      + 'function send() {'
-      + '  if (window.opener) {'
-      + '    window.opener.postMessage(msg, "*");'
-      + '    setTimeout(function() { window.close(); }, 3000);'
-      + '  }'
-      + '}'
-      + 'send();'
-      + 'window.addEventListener("message", send, false);'
-      + '})();<\/script></body></html>';
-
-    return new Response(html, {
-      headers: {
-        'Content-Type': 'text/html',
-        'Content-Security-Policy': "script-src 'unsafe-inline'",
-      },
+    return new Response(script, {
+      headers: { 'Content-Type': 'text/html' },
     });
-
   } catch (err) {
     return new Response(`Server error: ${err.message}`, { status: 500 });
   }
