@@ -47,8 +47,11 @@ export async function onRequestGet(context) {
 </html>`;
 
     return new Response(script, {
-      headers: { 'Content-Type': 'text/html' },
-    });
+  headers: { 
+    'Content-Type': 'text/html',
+    'Content-Security-Policy': "script-src 'unsafe-inline'",
+  },
+});
   } catch (err) {
     return new Response(`Server error: ${err.message}`, { status: 500 });
   }
