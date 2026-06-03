@@ -128,10 +128,13 @@
     });
   };
 
-  if (shouldShow()) {
-    setTimeout(function() {
-      document.getElementById('nl-popup').style.display = 'block';
-    }, DELAY_MS);
+if (shouldShow()) {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        var popup = document.getElementById('nl-popup');
+        if (popup) popup.style.display = 'block';
+      }, DELAY_MS);
+    });
   }
 })();
 </script>
