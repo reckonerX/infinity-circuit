@@ -29,18 +29,33 @@ export async function onRequestGet(context) {
 
     const script = `
 <!DOCTYPE html>
+const script = `
+<!DOCTYPE html>
 <html>
 <body>
 <script>
 (function() {
-  function receiveMessage(e) {
-    window.opener.postMessage(
-      'authorization:github:success:${JSON.stringify({ token: tokenData.access_token, provider: 'github' })}',
-      e.origin
-    );
+  var token = ${JSON.stringify(tokenData.access_token)};
+  var provider = 'github';
+  
+  function attemptPostMessage() {
+    if (window.opener) {
+      window.opener.postMessage(
+        'authorization:' + provider + ':success:' + JSON.stringify({ token: token, provider: provider }),
+        '*'
+      );
+      setTimeout(function() { window.close(); }, 1000);
+    } else {
+      // Fallback: store in localStorage for the CMS to pick up
+      localStorage.setItem('netlify-cms-auth', JSON.stringify({ token: token, provider: provider }));
+      document.body.innerHTML = '<p style="font-family:sans-serif;padding:2rem;">Authenticated. You can close this window.</p>';
+    }
   }
-  window.addEventListener('message', receiveMessage, false);
-  window.opener.postMessage('authorizing:github', '*');
+  
+  attemptPostMessage();
+  window.addEventListener('message', function(e) {
+    attemptPostMessage();
+  }, false);
 })();
 <\/script>
 </body>
