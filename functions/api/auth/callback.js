@@ -38,7 +38,7 @@ export async function onRequestGet(context) {
       + 'function send() {'
       + '  if (window.opener) {'
       + '    window.opener.postMessage(msg, "*");'
-      + '    setTimeout(function() { window.close(); }, 1000);'
+      + '    setTimeout(function() { window.close(); }, 3000);'
       + '  }'
       + '}'
       + 'send();'
