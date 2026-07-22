@@ -1,0 +1,108 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Infinity Circuit — Season Update</title>
+  <desc>Event calendar card showing four upcoming Infinity Circuit events on a cosmic dark background</desc>
+
+  <!-- Background -->
+  <rect width="1200" height="675" fill="#12101e"/>
+
+  <!-- Hex grid texture -->
+  <defs>
+    <pattern id="hexgrid" x="0" y="0" width="80" height="69.3" patternUnits="userSpaceOnUse">
+      <path d="M40 3 L72 21 L72 57 L40 75 L8 57 L8 21 Z" fill="none" stroke="#9370c8" stroke-width="0.4" opacity="0.12"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="url(#hexgrid)"/>
+
+  <!-- Header: logo mark + wordmark -->
+  <!-- Mark scaled ~1.8x, centered at x=100, y=62 -->
+  <g transform="translate(44, 30) scale(1.8)">
+    <polygon points="28,3 51,15.5 51,40.5 28,53 5,40.5 5,15.5" fill="none" stroke="#9370c8" stroke-width="1.5"/>
+    <polygon points="28,11 44,20.5 44,35.5 28,45 12,35.5 12,20.5" fill="none" stroke="#9370c8" stroke-width="1" opacity="0.45"/>
+    <polygon points="28,19 36,24 36,32 28,37 20,32 20,24" fill="#9370c8"/>
+    <circle cx="28" cy="3" r="2.8" fill="#c41e3a"/>
+    <circle cx="51" cy="15.5" r="2.8" fill="#e8b800"/>
+    <circle cx="51" cy="40.5" r="2.8" fill="#e87200"/>
+    <circle cx="28" cy="53" r="2.8" fill="#1a5fe0"/>
+    <circle cx="5" cy="40.5" r="2.8" fill="#0da85e"/>
+    <circle cx="5" cy="15.5" r="2.8" fill="#c0357a"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="160" y="70" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="28" font-weight="600" letter-spacing="0.08em" fill="#ffffff">INFINITY CIRCUIT</text>
+  <text x="162" y="92" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="500" letter-spacing="0.14em" fill="#9370c8">MARVEL: CRISIS PROTOCOL</text>
+
+  <!-- Section label -->
+  <text x="600" y="72" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="500" letter-spacing="0.14em" fill="#9370c8" text-anchor="end">SEASON CALENDAR</text>
+
+
+
+  <!-- EVENT CARDS — 4 cards, 2 rows of 2 -->
+  <!-- Card width: 530, gap: 72, left margin: 44 -->
+  <!-- Row 1: y=140, Row 2: y=400 -->
+
+  <!-- ─── CARD 1: Power Stone — July 25 ─── -->
+  <rect x="44" y="140" width="530" height="220" rx="8" fill="#1a1628" stroke="#c0357a" stroke-width="2"/>
+  <!-- Stone color left bar -->
+  <rect x="44" y="140" width="6" height="220" rx="3" fill="#c0357a"/>
+  <!-- Pill -->
+  <rect x="70" y="160" width="168" height="26" rx="13" fill="#2a1a2e" stroke="#c0357a" stroke-width="1.5"/>
+  <text x="154" y="177" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="12" font-weight="500" letter-spacing="0.1em" fill="#c0357a" text-anchor="middle">INFINITY QUALIFIER</text>
+  <!-- Date badge -->
+  <text x="554" y="177" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="500" letter-spacing="0.06em" fill="#c0357a" text-anchor="end">JULY 25</text>
+  <!-- Event name -->
+  <text x="70" y="220" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="26" font-weight="600" fill="#ffffff">Power Stone Qualifier</text>
+  <!-- Store + location -->
+  <text x="70" y="254" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="15" font-weight="400" fill="#9370c8">Mighty Meeple  ·  Concord, NC</text>
+  <!-- Details -->
+  <text x="70" y="286" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="400" fill="#7a6a9a">Registration 10:30am  ·  Round 1 11:00am  ·  $25 entry</text>
+  <!-- Urgency tag -->
+  <rect x="70" y="302" width="130" height="22" rx="11" fill="#3a1a2a"/>
+  <text x="135" y="317" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="11" font-weight="500" letter-spacing="0.08em" fill="#c0357a" text-anchor="middle">30/32 REGISTERED</text>
+
+  <!-- ─── CARD 2: Shards Event — August 8 ─── -->
+  <rect x="626" y="140" width="530" height="220" rx="8" fill="#1a1628" stroke="#9370c8" stroke-width="1.5"/>
+  <rect x="626" y="140" width="6" height="220" rx="3" fill="#9370c8"/>
+  <rect x="652" y="160" width="140" height="26" rx="13" fill="#251d35" stroke="#9370c8" stroke-width="1.5"/>
+  <text x="722" y="177" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="12" font-weight="500" letter-spacing="0.1em" fill="#9370c8" text-anchor="middle">SHARDS EVENT</text>
+  <text x="1136" y="177" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="500" letter-spacing="0.06em" fill="#9370c8" text-anchor="end">AUGUST 8</text>
+  <text x="652" y="220" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="26" font-weight="600" fill="#ffffff">Atomic Empire Shards Event</text>
+  <text x="652" y="254" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="15" font-weight="400" fill="#9370c8">Atomic Empire  ·  Durham, NC</text>
+  <text x="652" y="286" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="400" fill="#7a6a9a">Shard Points toward Championship qualification</text>
+  <rect x="652" y="302" width="148" height="22" rx="11" fill="#251d35"/>
+  <text x="726" y="317" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="11" font-weight="500" letter-spacing="0.08em" fill="#9370c8" text-anchor="middle">REGISTRATION OPEN</text>
+
+  <!-- ─── CARD 3: Reality Stone — September 19 ─── -->
+  <rect x="44" y="390" width="530" height="220" rx="8" fill="#1a1628" stroke="#c41e3a" stroke-width="1.5"/>
+  <rect x="44" y="390" width="6" height="220" rx="3" fill="#c41e3a"/>
+  <rect x="70" y="410" width="168" height="26" rx="13" fill="#2a1418" stroke="#c41e3a" stroke-width="1.5"/>
+  <text x="154" y="427" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="12" font-weight="500" letter-spacing="0.1em" fill="#c41e3a" text-anchor="middle">INFINITY QUALIFIER</text>
+  <text x="554" y="427" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="500" letter-spacing="0.06em" fill="#c41e3a" text-anchor="end">SEPTEMBER 19</text>
+  <text x="70" y="470" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="26" font-weight="600" fill="#ffffff">Reality Stone Qualifier</text>
+  <text x="70" y="504" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="15" font-weight="400" fill="#9370c8">House of Cards  ·  Winston-Salem, NC</text>
+  <text x="70" y="536" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="400" fill="#7a6a9a">Capacity limited — registration already half full</text>
+  <rect x="70" y="552" width="148" height="22" rx="11" fill="#2a1418"/>
+  <text x="144" y="567" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="11" font-weight="500" letter-spacing="0.08em" fill="#c41e3a" text-anchor="middle">REGISTRATION OPEN</text>
+
+  <!-- ─── CARD 4: Space Stone — October 17 ─── -->
+  <rect x="626" y="390" width="530" height="220" rx="8" fill="#1a1628" stroke="#1a5fe0" stroke-width="1.5"/>
+  <rect x="626" y="390" width="6" height="220" rx="3" fill="#1a5fe0"/>
+  <rect x="652" y="410" width="168" height="26" rx="13" fill="#141828" stroke="#1a5fe0" stroke-width="1.5"/>
+  <text x="736" y="427" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="12" font-weight="500" letter-spacing="0.1em" fill="#1a5fe0" text-anchor="middle">INFINITY QUALIFIER</text>
+  <text x="1136" y="427" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="500" letter-spacing="0.06em" fill="#1a5fe0" text-anchor="end">OCTOBER 17</text>
+  <text x="652" y="470" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="26" font-weight="600" fill="#ffffff">Space Stone Qualifier</text>
+  <text x="652" y="504" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="15" font-weight="400" fill="#9370c8">Atomic Empire  ·  Durham, NC</text>
+  <text x="652" y="536" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="13" font-weight="400" fill="#7a6a9a">32-player cap</text>
+  <rect x="652" y="552" width="148" height="22" rx="11" fill="#141828"/>
+  <text x="726" y="567" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="11" font-weight="500" letter-spacing="0.08em" fill="#1a5fe0" text-anchor="middle">COMING SOON</text>
+
+  <!-- Stone bar -->
+  <rect x="44" y="636" width="185" height="5" rx="2.5" fill="#c41e3a"/>
+  <rect x="237" y="636" width="185" height="5" rx="2.5" fill="#e8b800"/>
+  <rect x="430" y="636" width="185" height="5" rx="2.5" fill="#e87200"/>
+  <rect x="623" y="636" width="185" height="5" rx="2.5" fill="#1a5fe0"/>
+  <rect x="816" y="636" width="185" height="5" rx="2.5" fill="#0da85e"/>
+  <rect x="1009" y="636" width="147" height="5" rx="2.5" fill="#c0357a"/>
+
+  <!-- Website URL -->
+  <text x="1156" y="658" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="12" font-weight="400" letter-spacing="0.06em" fill="#9370c8" text-anchor="end" opacity="0.7">infinitycircuitmcp.com</text>
+</svg>
