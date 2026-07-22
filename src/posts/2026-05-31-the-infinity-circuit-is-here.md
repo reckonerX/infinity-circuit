@@ -3,7 +3,7 @@ title: The Infinity Circuit is here. Join our first Qualifier on July 25th.
 date: 2026-06-03T00:28:00.000Z
 description: The circuit launches with an Infinity Qualifier at Mighty Meeple in
   Concord, NC. One player leaves with the Power Stone.
-heroImage: /assets/images/posts/infinity_circuit_season_update-1-.svg
+heroImage: /assets/images/posts/infinity_circuit_announcement_graphic.svg
 ---
 We're excited to introduce the Infinity Circuit: a regional competitive circuit for Marvel: Crisis Protocol covering the Carolinas and Southern Virginia.
 
