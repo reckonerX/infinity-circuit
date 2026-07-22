@@ -3,7 +3,7 @@ title: The season is taking shape.
 date: 2026-07-22T18:11:00.000Z
 description: Four events on the calendar, Virginia coming soon, and the Power
   Stone Qualifier is almost full.
-heroImage: /assets/images/posts/infinity_circuit_season_update.svg
+heroImage: /assets/images/posts/infinity_circuit_season_update-1-.svg
 ---
 Our first season is moving fast. Here's where things stand.
 
