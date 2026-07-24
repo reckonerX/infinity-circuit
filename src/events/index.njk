@@ -164,7 +164,7 @@ description: Infinity Circuit — Upcoming sanctioned events calendar
 (function () {
   var SHEET_ID = '1eFyIt13Av9MmEx0pi0Kca9gxCJJdEs4lnV9slVSJQFE';
   var GID = '980771470';
-  var URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&gid=' + GID;
+  var URL = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&headers=1&gid=' + GID;
 
   var STONE_COLORS = {
     'Reality': { hex: '#c41e3a', rgb: '196,30,58'  },
@@ -316,10 +316,12 @@ description: Infinity Circuit — Upcoming sanctioned events calendar
         status:     status || 'PUBLISHED'
       });
     });
-    events.sort(function(a,b){
+    events.sort(function(a, b) {
       if (!a.date) return 1;
       if (!b.date) return -1;
-      return a.date > b.date ? 1 : -1;
+      var da = new Date(String(a.date).replace(/Date\((\d+),(\d+),(\d+)\)/, function(m,y,mo,d){ return new Date(+y,+mo,+d).toISOString(); }));
+      var db = new Date(String(b.date).replace(/Date\((\d+),(\d+),(\d+)\)/, function(m,y,mo,d){ return new Date(+y,+mo,+d).toISOString(); }));
+      return da - db;
     });
     return events;
   }
