@@ -31,12 +31,11 @@ description: Infinity Circuit Season Standings — Shard Point leaderboard
             <th style="width:120px; text-align:center;">Stone</th>
             <th style="width:100px; text-align:right;">Shards</th>
             <th style="width:80px; text-align:center;">Events</th>
-            <th style="width:160px;">Championship</th>
           </tr>
         </thead>
         <tbody id="standings-body">
           <tr>
-            <td colspan="6" style="text-align:center; padding: 3rem; color:rgba(255,255,255,0.4);">
+            <td colspan="5" style="text-align:center; padding: 3rem; color:rgba(255,255,255,0.4);">
               Loading...
             </td>
           </tr>
@@ -123,15 +122,6 @@ description: Infinity Circuit Season Standings — Shard Point leaderboard
       + '</div>';
   }
 
-  function champStanding(r) {
-    if (!r.champStanding) return '';
-    if (r.stone) {
-      var color = STONE_COLORS[r.stone] || '#888';
-      return '<span class="champ-stone" style="color:' + color + ';">Qualified ✓</span>';
-    }
-    return '<span style="color:var(--void-violet);">' + esc(r.champStanding) + '</span>';
-  }
-
   function esc(str) {
     if (!str) return '';
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -140,7 +130,7 @@ description: Infinity Circuit Season Standings — Shard Point leaderboard
   function renderRows(rows, showStone) {
     var tbody = document.getElementById('standings-body');
     if (!rows.length) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:3rem;color:rgba(255,255,255,0.4);">No standings data yet. Check back after the first event.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:3rem;color:rgba(255,255,255,0.4);">No standings data yet. Check back after the first event.</td></tr>';
       return;
     }
 
@@ -151,17 +141,15 @@ description: Infinity Circuit Season Standings — Shard Point leaderboard
         + '<td class="standings-rank">' + esc(r.rank) + '</td>'
         + '<td>'
           + '<div class="player-name">' + esc(r.name) + '</div>'
-          + (r.username ? '<div class="player-username">@' + esc(r.username) + '</div>' : '')
         + '</td>'
         + '<td style="text-align:center;">' + stoneCell(r.stone) + '</td>'
         + '<td style="text-align:right; font-weight:600; color:#fff;">' + esc(r.shards || '—') + '</td>'
         + '<td style="text-align:center; color:rgba(255,255,255,0.5);">'
           + esc(r.eventsCounted || '—') + (r.totalEvents ? '/' + esc(r.totalEvents) : '')
         + '</td>'
-        + '<td class="champ-standing">' + champStanding(r) + '</td>'
         + '</tr>';
     });
-    tbody.innerHTML = html || '<tr><td colspan="6" style="text-align:center;padding:2rem;color:rgba(255,255,255,0.4);">No players match current filter.</td></tr>';
+    tbody.innerHTML = html || '<tr><td colspan="5" style="text-align:center;padding:2rem;color:rgba(255,255,255,0.4);">No players match current filter.</td></tr>';
   }
 
 function parseRows(data) {
@@ -221,7 +209,7 @@ function parseRows(data) {
     })
     .catch(function (err) {
       document.getElementById('standings-body').innerHTML =
-        '<tr><td colspan="6" style="text-align:center;padding:3rem;color:#c00;">Failed to load standings. Please try again later.</td></tr>';
+        '<tr><td colspan="5" style="text-align:center;padding:3rem;color:#c00;">Failed to load standings. Please try again later.</td></tr>';
       document.getElementById('standings-status').textContent = 'Error loading data';
       console.error('Standings fetch error:', err);
     });
