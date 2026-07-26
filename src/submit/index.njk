@@ -200,7 +200,7 @@ textarea.form-input { resize: vertical; }
 
 .player-list-header {
   display: grid;
-  grid-template-columns: 32px 24px 1fr 1fr 1fr 1fr 32px;
+  grid-template-columns: 32px 24px minmax(80px, 1fr) minmax(60px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr) 32px;
   gap: 0.5rem;
   padding: 0 1rem 0.35rem;
   font-size: 0.7rem;
@@ -216,7 +216,7 @@ textarea.form-input { resize: vertical; }
   border-radius: 4px;
   padding: 0.75rem 1rem;
   display: grid;
-  grid-template-columns: 32px 24px 1fr 1fr 1fr 1fr 32px;
+  grid-template-columns: 32px 24px minmax(80px, 1fr) minmax(60px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr) 32px;
   gap: 0.5rem;
   align-items: center;
   cursor: grab;
@@ -284,7 +284,7 @@ textarea.form-input { resize: vertical; }
 .player-row-header { display: none; }
 
 /* ── Mobile styles ── */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .player-list-header { display: none; }
 
   .player-row {
