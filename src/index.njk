@@ -441,7 +441,18 @@ rows.sort(function(a, b) {
 });
 
 // Re-assign rank after sort
-rows.forEach(function(r, i) { r.displayRank = i + 1; });
+rows.forEach(function(r, i) {
+  if (i === 0) {
+    r.displayRank = 1;
+  } else {
+    var prev = rows[i - 1];
+    if (r.shards === prev.shards && !!r.stone === !!prev.stone) {
+      r.displayRank = prev.displayRank;
+    } else {
+      r.displayRank = i + 1;
+    }
+  }
+});
 
       var tbody = document.getElementById('home-standings-body');
       if (!rows.length) {
@@ -457,7 +468,6 @@ rows.forEach(function(r, i) { r.displayRank = i + 1; });
         return '<tr>'
           + '<td class="standings-rank">' + r.displayRank + '</td>'
           + '<td><div style="font-weight:500;color:#fff;">' + esc(r.name) + '</div>'
-            + (r.username ? '<div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">@' + esc(r.username) + '</div>' : '')
           + '</td>'
           + '<td style="text-align:center;">' + stoneCell + '</td>'
           + '<td style="text-align:right;font-weight:600;color:#fff;">' + esc(r.shards || '—') + '</td>'
