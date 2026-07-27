@@ -12,7 +12,7 @@ description: Submit event results to the Infinity Circuit
 </section>
 
 <section class="section section-light">
-  <div class="container" style="max-width: 720px;">
+  <div class="container" style="max-width: 900px;">
 
     <!-- ── Step 1: Access Code ── -->
     <div id="step-access">
@@ -284,25 +284,21 @@ textarea.form-input { resize: vertical; }
 .player-row-header { display: none; }
 
 /* ── Mobile styles ── */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .player-list-header { display: none; }
-
   .player-row {
     grid-template-columns: 1fr;
     gap: 0.5rem;
     cursor: default;
   }
-
-  .player-row-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.25rem;
-  }
-
+  .player-rank::before { content: 'Player ' attr(data-rank); }
   .drag-handle { display: none; }
-  .mobile-remove { display: block; }
-  .desktop-remove { display: none; }
+  .player-input::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.35);
+  }
 }
 </style>
 
@@ -392,16 +388,13 @@ function addPlayer() {
   row.className = 'player-row';
   row.draggable = true;
   row.innerHTML =
-    '<div class="player-row-header">'
-    + '<div class="player-rank">' + placement + '</div>'
-    + '<div class="drag-handle" title="Drag to reorder">⠿</div>'
-    + '<button class="player-remove mobile-remove" onclick="removePlayer(this)" title="Remove">×</button>'
-    + '</div>'
-    + '<input class="player-input" type="text" placeholder="Full name" data-field="name" data-label="Name *">'
-    + '<input class="player-input" type="number" placeholder="e.g. 17481" data-field="longshanks" title="Numerical Longshanks ID" data-label="LSID *">'
-    + '<input class="player-input" type="text" placeholder="Discord" data-field="discord" data-label="Discord">'
-    + '<input class="player-input" type="email" placeholder="Email" data-field="email" data-label="Email">'
-    + '<button class="player-remove desktop-remove" onclick="removePlayer(this)" title="Remove">×</button>';
+  '<div class="player-rank">' + placement + '</div>'
+  + '<div class="drag-handle" title="Drag to reorder">⠿</div>'
+  + '<input class="player-input" type="text" placeholder="Full name" data-field="name" data-label="Name *">'
+  + '<input class="player-input" type="number" placeholder="e.g. 17481" data-field="longshanks" title="Numerical Longshanks ID" data-label="LSID *">'
+  + '<input class="player-input" type="text" placeholder="Discord" data-field="discord" data-label="Discord">'
+  + '<input class="player-input" type="email" placeholder="Email" data-field="email" data-label="Email">'
+  + '<button class="player-remove" onclick="removePlayer(this)" title="Remove">×</button>';
 
   row.addEventListener('dragstart', function(e) {
     dragSrc = row;
