@@ -198,29 +198,29 @@ textarea.form-input { resize: vertical; }
   gap: 0.5rem;
 }
 
-.player-list-header {
-  display: grid;
-  grid-template-columns: 32px 24px minmax(80px, 1fr) minmax(60px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr) 32px;
-  gap: 0.5rem;
-  padding: 0 1rem 0.35rem;
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: rgba(255,255,255,0.35);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
 .player-row {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(147,112,200,0.2);
   border-radius: 4px;
   padding: 0.75rem 1rem;
   display: grid;
-  grid-template-columns: 32px 24px minmax(80px, 1fr) minmax(60px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr) 32px;
-  gap: 0.5rem;
+  grid-template-columns: 28px 20px 1fr 1fr 1fr 1fr 28px;
+  gap: 0.4rem;
   align-items: center;
   cursor: grab;
   transition: border-color 0.15s, background 0.15s;
+}
+
+.player-list-header {
+  display: grid;
+  grid-template-columns: 28px 20px 1fr 1fr 1fr 1fr 28px;
+  gap: 0.4rem;
+  padding: 0 1rem 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .player-row.dragging {
