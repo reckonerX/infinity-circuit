@@ -181,8 +181,19 @@ function parseRows(data) {
     return b.shards - a.shards;
   });
 
-  // Re-assign rank after sort
-  rows.forEach(function(r, i) { r.rank = i + 1; });
+// Re-assign rank after sort
+  rows.forEach(function(r, i) {
+  if (i === 0) {
+    r.rank = 1;
+  } else {
+    var prev = rows[i - 1];
+    if (r.shards === prev.shards && !!r.stone === !!prev.stone) {
+      r.rank = prev.rank;
+    } else {
+      r.rank = i + 1;
+    }
+  }
+});
 
   return rows;
 }
