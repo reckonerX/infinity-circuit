@@ -35,6 +35,16 @@ description: Infinity Circuit — Upcoming sanctioned events calendar
   </div>
 </section>
 
+<section id="past-events-section" style="display:none;" class="section section-tint">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Season History</span>
+      <h2 class="section-title">Past Events</h2>
+    </div>
+    <div id="past-events-grid" class="event-grid"></div>
+  </div>
+</section>
+
 <section class="section section-tint">
   <div class="container" style="text-align:center;">
     <span class="section-eyebrow">Tournament Organizers</span>
@@ -220,6 +230,20 @@ description: Infinity Circuit — Upcoming sanctioned events calendar
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
+  function isPast(dateVal) {
+    if (!dateVal) return false;
+    var m = String(dateVal).match(/Date\((\d+),(\d+),(\d+)\)/);
+    var d;
+    if (m) {
+      d = new Date(parseInt(m[1]), parseInt(m[2]), parseInt(m[3]));
+    } else {
+      d = new Date(dateVal);
+    }
+    var today = new Date();
+    today.setHours(0,0,0,0);
+    return d < today;
+  }
+
   function renderCard(ev) {
     var isQualifier = ev.tier === 'Infinity Qualifier' && ev.stone && STONE_COLORS[ev.stone];
     var stone = isQualifier ? STONE_COLORS[ev.stone] : null;
@@ -327,6 +351,7 @@ description: Infinity Circuit — Upcoming sanctioned events calendar
   }
 
   var allEvents = [];
+  var upcomingEvents = [];
 
   document.getElementById('tier-filters').addEventListener('click', function (e) {
     var btn = e.target.closest('.filter-btn');
@@ -334,19 +359,31 @@ description: Infinity Circuit — Upcoming sanctioned events calendar
     var tier = btn.dataset.tier;
     document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
     btn.classList.add('active');
-    var filtered = tier === 'all' ? allEvents : allEvents.filter(function(ev){ return ev.tier === tier; });
+    var filtered = tier === 'all' ? upcomingEvents : upcomingEvents.filter(function(ev){ return ev.tier === tier; });
     renderGrid(filtered);
   });
 
-  fetch(URL)
+fetch(URL)
     .then(function(res){ return res.text(); })
     .then(function(text){
       var json = text.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, '');
       var data = JSON.parse(json);
       allEvents = parseEvents(data);
-      renderGrid(allEvents);
-      var published = allEvents.filter(function(e){ return e.status !== 'CANCELLED'; }).length;
-      document.getElementById('events-status').textContent = published + ' upcoming event' + (published !== 1 ? 's' : '');
+
+      var upcoming = allEvents.filter(function(e){ return !isPast(e.date) && e.status !== 'CANCELLED'; });
+      var past = allEvents.filter(function(e){ return isPast(e.date) || e.status === 'CANCELLED'; });
+
+      upcomingEvents = upcoming;
+      renderGrid(upcoming);
+      document.getElementById('events-status').textContent = upcoming.length + ' upcoming event' + (upcoming.length !== 1 ? 's' : '');
+
+      var pastSection = document.getElementById('past-events-section');
+      var pastGrid = document.getElementById('past-events-grid');
+      if (past.length) {
+        pastSection.style.display = 'block';
+        past.reverse();
+        pastGrid.innerHTML = past.map(renderCard).join('');
+      }
     })
     .catch(function(err){
       document.getElementById('events-grid').innerHTML = '<div style="color:#c41e3a; padding:2rem 0;">Failed to load events. Please try again later.</div>';
