@@ -343,15 +343,24 @@ window.submitHomeNewsletter = function(e) {
             status: status || 'PUBLISHED'
           });
         });
-        events.sort(function(a,b){
+        events.sort(function(a, b) {
           if (!a.date) return 1;
           if (!b.date) return -1;
-          return a.date > b.date ? 1 : -1;
+          var da = new Date(String(a.date).replace(/Date\((\d+),(\d+),(\d+)\)/, function(m,y,mo,d){ return new Date(+y,+mo,+d).toISOString(); }));
+          var db = new Date(String(b.date).replace(/Date\((\d+),(\d+),(\d+)\)/, function(m,y,mo,d){ return new Date(+y,+mo,+d).toISOString(); }));
+          return da - db;
         });
       }
 
-      var container = document.getElementById('home-events');
-      var upcoming = events.filter(function(e){ return e.status !== 'CANCELLED'; }).slice(0, 3);
+        var container = document.getElementById('home-events');
+        var today = new Date();
+        today.setHours(0,0,0,0);
+        var upcoming = events.filter(function(e) {
+          if (!e.date) return false;
+          var m = String(e.date).match(/Date\((\d+),(\d+),(\d+)\)/);
+          var d = m ? new Date(parseInt(m[1]), parseInt(m[2]), parseInt(m[3])) : new Date(e.date);
+          return d >= today && e.status !== 'CANCELLED';
+        }).slice(0, 3);
 
       if (!upcoming.length) {
         container.innerHTML = '<p style="color:rgba(255,255,255,0.4);">No upcoming events yet. Check back soon.</p>';
