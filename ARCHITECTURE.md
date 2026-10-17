@@ -2,9 +2,9 @@
 
 How infinitycircuitmcp.com is built, how data flows, and the settings that must not be "fixed."
 
-Items marked **(verify)** come from the build chats but weren't confirmed in the final code. Check them against the repo and correct this file.
+All earlier **(verify)** items were checked against the repo and the deployed web app on Oct 17, 2026. If you add an unconfirmed item, mark it **(verify)**.
 
-No credentials belong in this file. The TO access code, webhook URLs, and OAuth secrets live in the Sheet's Config tab, GitHub Secrets, Cloudflare environment variables, and a password manager.
+No credentials belong in this file. The TO access code, webhook URLs, and OAuth secrets live in the Sheet's Config tab, Apps Script Script Properties, GitHub Secrets, Cloudflare environment variables, and a password manager.
 
 ---
 
@@ -53,19 +53,34 @@ Cloudflare deploys in about a minute after a push. If the live site looks stale,
 ```
 .github/workflows/discord-notify.yml   GitHub Action: posts new news posts to #circuit-news
 functions/api/auth/index.js            Pages Function: starts GitHub OAuth for Decap
-functions/api/auth/callback(.js)       Pages Function: OAuth callback (verify exact path)
+functions/api/auth/callback.js         Pages Function: OAuth callback
 src/_includes/layouts/base.njk         Site layout, nav, OG meta tags
+src/_includes/layouts/post.njk         News post layout
 src/index.njk                          Home: live events + standings previews, Champion section
 src/standings/index.njk                Standings (live from Sheet)
 src/events/index.njk                   Events calendar (live from Sheet; upcoming/past split)
-src/submit/index.njk                   TO results submission form
+src/news/index.njk                     News list
+src/gallery/index.njk                  Gallery
+src/rules/index.njk                    Rules page: BOTH documents on one page (see below)
+src/about/index.njk                    About
+src/apply/index.njk                    Apply to Host form (posts to Apps Script)
+src/submit/index.njk                   TO results submission form (posts to Apps Script)
+src/assets/docs/rules-and-structure.pdf      Circuit Rules & Structure PDF download
+src/assets/docs/event-operations-guide.pdf   Event Operations Guide PDF download
+src/assets/css/style.css               Site styles
 src/admin/config.yml                   Decap CMS config
+src/admin/index.html                   Decap CMS admin page
 src/posts/                             News posts (Markdown, written by Decap)
 ```
 
-Other pages: News, Gallery, Rules (with PDF downloads), About, Apply to Host.
+### Rules page
 
-**(verify)** Paths for the Gallery, Rules, About, and Apply pages, and for the rules PDFs (the Circuit Rules download is `rules_and_structure.pdf`).
+`src/rules/index.njk` holds both documents: Circuit Rules & Structure (anchor `#circuit-rules`) and the Event Operations Guide (anchor `#operations-guide`). There is no separate Event Operations page.
+
+- The page is a **summary**, not a full copy of either document. The PDFs are authoritative, and the page says so.
+- Each section shows its version in the eyebrow at the top and a "Version X.Y | Last updated [date]" line at the bottom (Brand Guide 9.3). Update both when a document changes.
+- The PDF filenames use hyphens: `rules-and-structure.pdf`, `event-operations-guide.pdf`. Replace the file in place; the download links don't change.
+- Current as of Oct 17, 2026: Circuit Rules v1.4, Event Operations Guide v1.5. Ops section headings use the v1.5 section numbers (2, 3, 5, 6, 8, 15); sections the page doesn't summarize are skipped.
 
 ---
 
@@ -98,16 +113,18 @@ Standings are near real-time: the next page load reflects whatever the Sheet hol
 |---|---|---|
 | Raw Results | | One row per player result; `Status` = PENDING / APPROVED / REJECTED |
 | Players | | One row per player, keyed by Longshanks username. Columns: username, display name, email, Discord, Stone held |
-| Standings | (verify) | Computed by Apps Script; read by the site |
+| Standings | 2103732828 | Computed by Apps Script; read by the site |
 | Events | 980771470 | Event calendar |
 | Gallery | 866280774 | Photos |
 | Champions | 359881057 | Champion / Hall of Heroes |
 | Applications | | Apply to Host submissions |
-| Config | | Settings, including the TO access code and `MAX_RESULTS` (best-N results counted; default 4) |
+| Config | | Settings: TO access code, admin email, `Max Results Counted` (best-N results; default 4), multipliers, base points |
 
 **Rules for editing the Sheet:**
 - Never leave placeholder text rows under a header. The site renders them as real events or players.
 - Longshanks username is the canonical player ID. Don't key on display names.
+- The script looks up each Config value by the exact text in column A. Don't rename a Config label unless the script accepts the new name. The 15+ multiplier is the one exception: the script accepts either `Multiplier 15+` or `Multiplier 15-24`.
+- **Never re-run `setupInfinityCircuitSheet()`.** It clears Raw Results, Players, Standings, and Config, which would wipe the season.
 
 ### 4.3 Writing (site to Apps Script)
 
@@ -115,16 +132,17 @@ Standings are near real-time: the next page load reflects whatever the Sheet hol
 `https://script.google.com/macros/s/AKfycby5wQ2PIHH9IeKp5mgiPpcH8TO9JyhXXeaABTUDZOov4zxZ_r3tdeIgVLbZn40rBAznNg/exec`
 
 **What the web app does:**
-- Accepts TO submissions via POST and checks the access code against Config.
-- Writes rows to Raw Results as PENDING.
-- Creates player records on first approved result.
+- Accepts TO submissions and Apply to Host applications via POST, and checks the TO access code against Config.
+- Writes rows to Raw Results as PENDING (admin submissions go straight to APPROVED).
+- Scores each row at submission time: base points × attendance multiplier. Events below the minimum (Shards Event under 5 players, Qualifier under 8) are recorded at 0 Shard Points with a note; the Qualifier winner still gets the Stone (Rules v1.4).
+- Creates player records on approval, for TO and admin submissions alike.
 - Applies the Stone Cascade Rule.
 - Recalculates standings.
 - Emails the admin.
 
-The submit form unlocks with the TO access code. The code is checked client-side, and the page itself is publicly reachable.
+The submit and apply forms post directly to the Apps Script endpoint. There is no Pages Function proxy. The submit form unlocks with the TO access code; the code is checked client-side, and the page itself is publicly reachable.
 
-**(verify)** Whether the planned Pages Function proxy for this endpoint was ever built. The current setup suggests the form posts directly to Apps Script.
+**Deploying script changes:** the web app runs a pinned deployment version. After editing the script, use Deploy, then Manage deployments, then edit, then New version. The endpoint URL doesn't change. The onEdit trigger and editor-run functions use the latest saved code without a redeploy.
 
 **Submit form fields:**
 - Players can be dragged to reorder placements.
@@ -134,12 +152,23 @@ The submit form unlocks with the TO access code. The code is checked client-side
 ### 4.4 Results workflow
 
 1. The TO submits the form, and rows land in Raw Results as PENDING.
-2. The admin reviews and sets each row to APPROVED or REJECTED. An onEdit trigger recalculates standings quietly, with no Discord post.
-3. After all rows for the event are approved, run **`manualRecalculate()`** from the Apps Script editor. This is the only thing that posts to #standings.
+2. The admin reviews and sets each row to APPROVED or REJECTED, one row at a time or several at once (fill-down or paste both work). An onEdit trigger creates missing player records, applies the Stone cascade, and recalculates standings quietly, with no Discord post.
+3. Run **`auditStones()`** for a Qualifier to confirm who received the Stone.
+4. After all rows for the event are approved, run **`manualRecalculate()`** from the Apps Script editor. This is the only thing that posts to #standings.
 
 `recalculateStandings(notifyDiscord)` takes the flag. Only `manualRecalculate()` passes it as true.
 
 The admin can also enter rows directly, which skips the approval step.
+
+**Stone cascade behavior:**
+- It waits until the 1st-place row is approved, then awards the Stone to the highest finisher who holds no Stone.
+- If anyone already holds that Stone, it does nothing. Re-approving rows never moves a Stone. To reassign one on purpose, edit Stone Held on the Players tab by hand.
+
+**Standings order:** Stone holders sort first, then everyone else by Shard total. This is intended, and the Discord top-5 uses the same order.
+
+**Editor-only helpers** (neither posts to Discord):
+- `checkSetup()`: confirms the webhook property is set and the 15+ multiplier reads correctly.
+- `auditStones()`: lists each approved Qualifier's 1st-place finisher next to the current holder of that Stone.
 
 ---
 
@@ -154,7 +183,7 @@ The admin can also enter rows directly, which skips the approval step.
 
 ### Auth
 
-`functions/api/auth/index.js` redirects to GitHub with `client_id` from the Cloudflare env var `GITHUB_CLIENT_ID`, scope `repo`, and passes Decap's `state` parameter through. The client secret is a Cloudflare env var. **(verify)** the exact variable name.
+`functions/api/auth/index.js` redirects to GitHub with `client_id` from the Cloudflare env var `GITHUB_CLIENT_ID`, scope `repo`, and passes Decap's `state` parameter through. `functions/api/auth/callback.js` exchanges the code using `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`, both Cloudflare env vars.
 
 Publishing a post commits Markdown to `src/posts/`, Cloudflare rebuilds, and the post goes live about a minute later.
 
@@ -165,13 +194,13 @@ Publishing a post commits Markdown to `src/posts/`, Cloudflare rebuilds, and the
 | Channel | Trigger | Where configured |
 |---|---|---|
 | #circuit-news | GitHub Action on push to `main`, only when a file in `src/posts/` is **added** | `.github/workflows/discord-notify.yml`; secret `DISCORD_CIRCUIT_NEWS_WEBHOOK` |
-| #standings | Apps Script, only from `manualRecalculate()` | Webhook URL stored in Apps Script. Repo secret `DISCORD_STANDINGS_WEBHOOK` also exists. **(verify)** whether it's used. |
+| #standings | Apps Script, only from `manualRecalculate()` | Webhook URL in Apps Script **Script Properties** as `STANDINGS_WEBHOOK_URL`, never in the code. The repo secret `DISCORD_STANDINGS_WEBHOOK` is not used by any workflow. |
 | #tournament-results | None. TOs post manually by design. | |
 | #event-calendar, #announcements | None. Manual by design. | |
 
 The Action compares changes with `git diff --name-only --diff-filter=A HEAD~1 HEAD`. Without `--diff-filter=A`, merge commits and edits re-announce old posts.
 
-The #standings webhook was recreated after the channel was accidentally deleted. If it ever stops posting, check the URL first.
+The #standings webhook was rotated on Oct 17, 2026 after its URL had been stored in the script. If it ever stops posting, check the `STANDINGS_WEBHOOK_URL` property first, then the execution log's "Discord response:" line. If the property is missing, the post is skipped and logged.
 
 ---
 
@@ -188,8 +217,7 @@ The #standings webhook was recreated after the channel was accidentally deleted.
 
 - **Header rows rendering as data:** check for literal placeholder rows in the Sheet first. `&headers=1` alone didn't fix it during the build.
 - **Submit form layout:** it broke on a ThinkPad at narrow widths. The grid now uses `minmax()` columns on `.player-row` and `.player-list-header`.
-- **Event Operations page out of date** (as of Oct 17, 2026): the page text says v1.4, but the PDF download is v1.5. Still to update: the version label, the Section 3.1 event naming table, and a duplicate bullet in Section 6.
-- **Old graphics break the Stone Bar spec** (Brand Guide 3.5): the launch post's hero image, and possibly `og-preview.png`, have gapped, fully rounded segments.
+- **Old graphics break the Stone Bar spec** (Brand Guide 3.5): the launch post's hero image, and possibly `og-preview.png`, have gapped, fully rounded segments. Accepted as is; these won't be fixed. Don't flag them again.
 
 ---
 
@@ -201,4 +229,4 @@ The #standings webhook was recreated after the channel was accidentally deleted.
 
 ---
 
-*Last updated: Oct 17, 2026*
+*Last updated: Oct 17, 2026 (verified against the repo and the deployed web app)*
